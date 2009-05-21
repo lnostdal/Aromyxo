@@ -4,7 +4,6 @@
 (defsystem aromyxo
   :description "Messy collection of utilities, hacks .."
   :author "Lars Rune Nøstdal <larsnostdal@gmail.com>"
-  :licence "Same license as SymbolicWeb"
   
   :depends-on (:closer-mop
                :sb-cltl2
@@ -58,9 +57,9 @@
             :components
             (;;(:file "concurrency") ;; defpackage stuff from before the merge of am-util and am-conc
              (:file "thread")
-             (:file "sleeper")
+             ;;(:file "sleeper")
              (:file "mutex")
-             (:file "timer")
+             ;;(:file "timer")
              (:file "condition") ;; TODO: rename to waitqueue.lisp ..?
              (:file "locked-object")
              (:file "semaphores")
