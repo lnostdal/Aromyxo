@@ -40,10 +40,10 @@
 
 #|
 Inherit from the class SELF-REF to do things like:
-(defclass test (self-ref)
+ (defclass test (self-ref)
   ((a :initform (write-line (format nil "*self* is ~A~%" *self*)))))
 
-(defun test ()
+ (defun test ()
   (let ((test (make-instance 'test)))
     (values test
             (slot-value test 'a))))
@@ -57,7 +57,6 @@ Inherit from the class SELF-REF to do things like:
 (export 'self-ref)
 
 (defmethod initialize-instance :around ((self-ref self-ref) &key)
-  ;; Build up a stack of "construction context information".
   (let ((*self-refs* (cons self-ref *self-refs*)))
     (when (next-method-p)
       (call-next-method))))
