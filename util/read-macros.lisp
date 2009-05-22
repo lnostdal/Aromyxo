@@ -48,10 +48,23 @@ For instance,
 (set-macro-character #\¤
                      (lambda (stream char)
                        (declare (ignore char))
-                       (let ((form (read stream)))
-                         (if (char= #\( (char (princ-to-string form) 0))
-                             `(make-instance ',(first form) ,@(rest form))
-                             `(slot-value %with-object ',form))))
+                       (let* ((form (read stream))
+                              (first-char (char (princ-to-string form) 0)))
+
+                         (cond
+                           ((char= #\( first-char)
+                            `(make-instance ',(first form) ,@(rest form)))
+
+                           (t
+                            `(slot-value %with-object ',form)))))
+                     t)
+
+
+(set-macro-character #\↑
+                     (lambda (stream char)
+                       (declare (ignore char))
+                       `(with-object (self)
+                          ,(read stream)))
                      t)
 
 
@@ -67,7 +80,7 @@ For instance,
 
 
 #|
-(set-macro-character #\§
+ (set-macro-character #\§
                      (lambda (stream char)
                        (declare (ignore char))
                        (let* ((form (read stream)))
