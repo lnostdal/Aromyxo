@@ -59,7 +59,7 @@
              (:file "thread")
              ;;(:file "sleeper")
              (:file "mutex")
-             ;;(:file "timer")
+             (:file "timer")
              (:file "condition") ;; TODO: rename to waitqueue.lisp ..?
              (:file "locked-object")
              (:file "semaphores")
