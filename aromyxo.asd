@@ -2,8 +2,9 @@
 
 
 (defsystem aromyxo
-  :description "Messy collection of utilities, hacks .."
-  :author "Lars Rune Nøstdal <larsnostdal@gmail.com>"
+  :description "Messy collection of utilities and hacks. A scratchpad."
+  :license "AGPLv3 + GPL linking exception."
+  :author "Lars Rune Nøstdal <larsnostdal@gmail.com> http://nostdal.ath.cx/"
   
   :depends-on (:closer-mop
                :sb-cltl2
@@ -65,7 +66,6 @@
              (:file "semaphores")
              (:file "process")
              (:file "atomic")
-             (:file "transaction")
              ))
 
    (:module web
@@ -77,5 +77,5 @@
              (:file "url-decode")
              (:file "url-encode")
              ))
-
    ))
+   
