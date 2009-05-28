@@ -18,6 +18,10 @@
 (export 'mk-ptr)
 
 
+(defmethod deref-expand ((arg symbol) (type (eql 'pointer)))
+  `(ptr-value ,arg))
+
+
 (defmethod deref ((pointer pointer))
   (ptr-value pointer))
 (export 'deref)

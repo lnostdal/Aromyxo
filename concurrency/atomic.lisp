@@ -5,13 +5,19 @@
 (declaim (optimize speed))
 
 
-(defstruct (atomt (:constructor mk-atom (&optional value)))
+(defstruct (atomt (:constructor mk-atom (&optional value))
+                  (:copier nil))
   (value))
 (export '(atomt mk-atom atomt-p atomt-value))
 
 
+(defmethod deref-expand ((arg symbol) (type (eql 'atomt)))
+  `(atomt-value ,arg))
+
+
 (defmethod deref ((atomt atomt))
   (atomt-value atomt))
+(export 'deref)
 
 
 (defmacro swap (place new)
@@ -34,10 +40,12 @@ Note that NEW might be evaluated more than once."
 (export 'swap-atom)
 
 
+(declaim (inline swap-atom-fn))
 (defun swap-atom-fn (atom fn)
   "FN is a function that accepts one argument; the old value of ATOM. It must
 return a new and unique, on an EQ basis, value. Note that it might be called
-more than once."
+more than once and the old value passed to the function might change for each
+call."
   (declare (atomt atom)
            (function fn))
   (swap-atom atom (funcall fn %old)))

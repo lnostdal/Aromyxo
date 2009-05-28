@@ -2,11 +2,6 @@
 
 (in-package #:aromyxo)
 
-#|
-(defparameter *extract-model-p* nil)
-(export '*extract-model-p*)
-|#
-
 
 (defmacro with-object (object &body body)
   `(let ((%with-object ,object))
@@ -20,8 +15,30 @@
        :do (setf value (deref value)))
     value))
 
+
+(defmethod deref-expand ((arg symbol) type)
+  nil)
+
+
+(define-compiler-macro deref (&whole form arg &environment env)
+  (if (atom arg)
+      (let ((type (cdr (assoc 'type (third (multiple-value-list (sb-cltl2:variable-information arg env)))))))
+        (if-let (body (deref-expand arg type))
+          body
+          form))
+      form))
+
+
+
+;; TODO: Finish this and add expanders to the appropriate places.
 #|
-(defmacro with-model-of (&body body)
-  `(let ((*extract-model-p* t))
-     ,@body))
+(define-compiler-macro (setf deref) (&whole form arg arg2 &environment env)
+  (dbg-princ form)
+  (dbg-princ arg)
+  (dbg-princ arg2)
+  (let ((type (cdr (assoc 'type (third (multiple-value-list (sb-cltl2:variable-information
+                                                             arg2
+                                                             env)))))))
+    (dbg-princ type))
+  form)
 |#

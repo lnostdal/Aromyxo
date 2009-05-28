@@ -66,7 +66,7 @@
    )
 
   (:export
-   #:deref ;;#:deref-circular
+   #:deref #:deref-expand
    #:full-deref
    ;#:delay-gc
    )
