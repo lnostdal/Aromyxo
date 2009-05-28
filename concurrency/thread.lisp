@@ -30,6 +30,12 @@
 (export 'with-thread)
 
 
+(defmacro with-sthread (&body body)
+  "Define and start a thread as simple as possible."
+  `(sb-thread:make-thread (lambda () ,@body)))
+(export 'with-sthread)
+
+
 
 
 
