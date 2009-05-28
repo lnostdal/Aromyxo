@@ -26,3 +26,8 @@
 (defmacro symbol-macro-bound-p (variable &environment env)
   (eq :symbol-macro (sb-cltl2:variable-information variable env)))
 (export 'symbol-macro-bound-p)
+
+
+(defmacro type-info (name &environment env)
+  (cdr (assoc 'type (third (multiple-value-list (sb-cltl2:variable-information name env))))))
+(export 'type-info)
