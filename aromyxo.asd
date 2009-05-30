@@ -22,6 +22,7 @@
             ((:file "util") ;; TODO: This also contains some code. Should probably move stuff around.
              (:file "deref") ;; TODO: This actually contains the code for the WITH-OBJECT macro.
              (:file "read-macros")
+             (:file "lisp-object-metadata")
              (:file "symbols")
              (:file "fflet")
              (:file "random")
