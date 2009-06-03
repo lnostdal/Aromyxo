@@ -56,6 +56,7 @@ Inherit from the class SELF-REF to do things like:
   ())
 (export 'self-ref)
 
+;; Note that *SELF-REFS* is not visible to code in :DEFAULT-INITARGS.
 (defmethod initialize-instance :around ((self-ref self-ref) &key)
   (let ((*self-refs* (cons self-ref *self-refs*)))
     (when (next-method-p)
