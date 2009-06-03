@@ -101,13 +101,12 @@
                     (go :again)))))))
 
       (first-p
-       (funcall list-place (cons element (funcall list-place))))
+       (funcall list-place (cons element list)))
 
       (last-p
-       (let ((list (funcall list-place)))
-         (if list
-             (setf (cdr (last list)) (list element))
-             (funcall list-place (list element)))))
+       (if list
+           (setf (cdr (last list)) (list element))
+           (funcall list-place (list element))))
 
       (t
        (error ":AFTER or :BEFORE, or :FIRST-P or :LAST-P needed.")))))
