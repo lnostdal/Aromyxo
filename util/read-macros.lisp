@@ -71,16 +71,13 @@ For instance,
                      t)
 
 
-
-
-
-
-
 (set-macro-character #\↺
                      (lambda (stream char)
                        (declare (ignore char))
                        `(place-fn ,(read stream)))
                      t)
+
+
 
 
 #|
