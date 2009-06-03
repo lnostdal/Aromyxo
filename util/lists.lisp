@@ -67,6 +67,8 @@
 (defun insert (element list-place &key
                (after nil after-supplied-p)
                (before nil before-supplied-p)
+               (last-p nil)
+               (first-p nil)
                (test 'eql))
   "LIST-PLACE is created by the PLACE-FN macro or the ↺ macro character.
 
@@ -98,6 +100,15 @@
                   (when current-cons
                     (go :again)))))))
 
+      (first-p
+       (funcall list-place (cons element (funcall list-place))))
+
+      (last-p
+       (let ((list (funcall list-place)))
+         (if list
+             (setf (cdr (last list)) (list element))
+             (funcall list-place (list element)))))
+
       (t
-       (error ":AFTER or :BEFORE needed.")))))
+       (error ":AFTER or :BEFORE, or :FIRST-P or :LAST-P needed.")))))
 (export 'insert)
