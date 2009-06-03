@@ -60,10 +60,13 @@ For instance,
                      t)
 
 
+;; TODO: Add support for the ASSERT here based on compiler-settings.
 (set-macro-character #\↑
                      (lambda (stream char)
                        (declare (ignore char))
-                       `(with-object (self)
+                       `(with-object (self) #|(let ((self (self)))
+                                       (assert self nil "AROMYXO: While expanding the ↑ reader macro, (SELF) did not return anything.")
+                                       self)|#
                           ,(read stream)))
                      t)
 
@@ -73,10 +76,11 @@ For instance,
 
 
 
-#|(set-macro-character #\↺
+(set-macro-character #\↺
                      (lambda (stream char)
                        (declare (ignore char))
-                       `(with-model-of ,(read stream))))|#
+                       `(place-fn ,(read stream)))
+                     t)
 
 
 #|

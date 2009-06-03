@@ -45,15 +45,6 @@
     (if source (rec source nil) nil)))
 (export 'group)
 
-#|
-(defun insert (element position list)
-  "Inserts an `element' at `position' in `list', and returns the result."
-  `(,@(subseq list 0 position)
-    ,element
-    ,@(subseq list position)))
-(export 'insert)
-|#
-
 
 (defun exchange (element-1 element-2 list &rest args)
   (let ((sub-1 (apply #'member element-1 list args))
@@ -62,3 +53,51 @@
           (car sub-2) element-1))
   list)
 (export 'exchange)
+
+
+(defmacro place-fn (place-form)
+  (with-gensyms (value value-supplied-p)
+    `(lambda (&optional (,value nil ,value-supplied-p))
+       (if ,value-supplied-p
+           (setf ,place-form ,value)
+           ,place-form))))
+(export 'place-fn)
+
+
+(defun insert (element list-place &key
+               (after nil after-supplied-p)
+               (before nil before-supplied-p)
+               (test 'eql))
+  "LIST-PLACE is created by the PLACE-FN macro or the ↺ macro character.
+
+  AROMYXO> (let ((list (list 1 2 3 4 5)))
+             (insert 3.5 ↺list :after 3)
+             list)
+  (1 2 3 3.5 4 5)"
+  (ensure-function test)
+  (ensure-function list-place)
+  (let ((list (funcall list-place)))
+    (cond
+      (after-supplied-p
+       (if-let ((tail (member after list :test test)))
+         (setf (cdr tail) (cons element (cdr tail)))
+         (error "~A not found in ~A." after list)))
+
+      (before-supplied-p
+       (let ((current-cons list)
+             (previous-cons nil))
+         (tagbody
+          :again
+            (if (funcall test before (car current-cons))
+                (if previous-cons
+                    (setf (cdr previous-cons) (cons element (cdr previous-cons)))
+                    (funcall list-place (cons element list)))
+                (progn
+                  (setf previous-cons current-cons
+                        current-cons (cdr current-cons))
+                  (when current-cons
+                    (go :again)))))))
+
+      (t
+       (error ":AFTER or :BEFORE needed.")))))
+(export 'insert)
