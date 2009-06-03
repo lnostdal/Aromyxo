@@ -76,38 +76,38 @@
              (insert 3.5 ↺list :after 3)
              list)
   (1 2 3 3.5 4 5)"
+  (declare (optimize speed))
   (ensure-function test)
   (ensure-function list-place)
-  (let ((list (funcall list-place)))
-    (cond
-      (after-supplied-p
-       (if-let ((tail (member after list :test test)))
-         (setf (cdr tail) (cons element (cdr tail)))
-         (error "~A not found in ~A." after list)))
+  (locally (declare (function test list-place))
+    (let ((list (funcall list-place)))
+      (cond
+        (after-supplied-p
+         (if-let ((tail (member after list :test test)))
+           (setf (cdr tail) (cons element (cdr tail)))
+           (error "~A not found in ~A." after list)))
 
-      (before-supplied-p
-       (let ((current-cons list)
-             (previous-cons nil))
-         (tagbody
-          :again
-            (if (funcall test before (car current-cons))
-                (if previous-cons
-                    (setf (cdr previous-cons) (cons element (cdr previous-cons)))
-                    (funcall list-place (cons element list)))
-                (progn
-                  (setf previous-cons current-cons
-                        current-cons (cdr current-cons))
-                  (when current-cons
-                    (go :again)))))))
+        (before-supplied-p
+         (let ((current-cons list)
+               (previous-cons nil))
+           (tagbody
+            :again
+              (if (funcall test before (car current-cons))
+                  (if previous-cons
+                      (setf (cdr previous-cons) (cons element (cdr previous-cons)))
+                      (funcall list-place (cons element list)))
+                  (when (setf previous-cons current-cons
+                              current-cons (cdr current-cons))
+                    (go :again))))))
 
-      (first-p
-       (funcall list-place (cons element list)))
+        (first-p
+         (funcall list-place (cons element list)))
 
-      (last-p
-       (if list
-           (setf (cdr (last list)) (list element))
-           (funcall list-place (list element))))
+        (last-p
+         (if list
+             (setf (cdr (last list)) (list element))
+             (funcall list-place (list element))))
 
-      (t
-       (error ":AFTER or :BEFORE, or :FIRST-P or :LAST-P needed.")))))
+        (t
+         (error ":AFTER or :BEFORE, or :FIRST-P or :LAST-P needed."))))))
 (export 'insert)
