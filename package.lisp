@@ -2,6 +2,7 @@
 
 
 (defpackage #:aromyxo
+  (:nicknames :amx)
   (:use
    #:cl
    #:closer-mop
@@ -9,9 +10,9 @@
    #:bordeaux-threads #:sb-thread
    )
 
-  
+
   ;; concurrency/
-  
+
   (:shadow
    #:with-timeout
    #:*current-thread*
@@ -39,7 +40,7 @@
    #:thread-name
    #:all-threads
    #:join-thread
-   
+
    #:semaphore
    #:semaphore-count
    #:semaphore-name
@@ -54,7 +55,7 @@
    #:release-lock
    )
 
-  
+
   ;; util/
 
   (:shadowing-import-from #:alexandria
@@ -86,4 +87,3 @@
 (eval-when (:execute :load-toplevel :compile-toplevel)
   (when (find-package :swank)
     (pushnew :swank *features*)))
-
