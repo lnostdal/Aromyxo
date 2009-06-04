@@ -2,28 +2,11 @@
 
 (in-package #:aromyxo)
 
-#|
-(defpackage #:am-util
-  (:use #:cl #:cl-utilities #:alexandria #:am-conc
-        #:closer-mop)
-  
-  (:shadowing-import-from #:alexandria
-    #:copy-array
-    #:compose
-    #:with-unique-names
-    #:once-only
-    #:with-gensyms)
-
-  (:nicknames #:amu))
-
-(in-package #:am-util)
-
 
 ;; I think Slime/Swank should do this already, but ok.
 (eval-when (:execute :load-toplevel :compile-toplevel)
   (when (find-package :swank)
     (pushnew :swank *features*)))
-|#
 
 
 (defun generate-id-string (&optional (length 30))
@@ -91,7 +74,7 @@
 
 (defmacro mvcall (fun &rest args)
   `(multiple-value-call ,fun ,@args))
-(export 'mvcall)                 
+(export 'mvcall)
 
 
 
@@ -102,7 +85,7 @@
     (list 'setf
      (dolist* ((place value) ,places vals)
                    (list place value)))))
-(export 'mvsetf)   
+(export 'mvsetf)
 |#
 
 
