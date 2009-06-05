@@ -69,7 +69,8 @@
   (:export
    #:deref #:deref-expand
    #:full-deref
-   ;#:delay-gc
+
+   #:lazy-value #:mk-lazy-value
    )
 
 
