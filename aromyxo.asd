@@ -5,14 +5,14 @@
   :description "Messy collection of utilities and hacks. A scratchpad."
   :license "AGPLv3 + GPL linking exception."
   :author "Lars Rune Nøstdal <larsnostdal@gmail.com> http://nostdal.ath.cx/"
-  
+
   :depends-on (:closer-mop
                :sb-cltl2
                :cl-utilities :alexandria
                :md5
                :bordeaux-threads
                :cl-ppcre)
-  
+
   :serial t
   :components
   ((:file "package")
@@ -20,6 +20,8 @@
             :serial t
             :components
             ((:file "util") ;; TODO: This also contains some code. Should probably move stuff around.
+             (:file "printing")
+             (:file "lazy")
              (:file "deref") ;; TODO: This actually contains the code for the WITH-OBJECT macro.
              (:file "read-macros")
              (:file "lisp-object-metadata")
@@ -53,7 +55,7 @@
              (:file "pointer")
              (:file "connection")))
 
-   
+
    (:module concurrency
             :serial t
             :components
@@ -79,4 +81,3 @@
              (:file "url-encode")
              ))
    ))
-   
