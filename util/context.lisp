@@ -6,7 +6,7 @@
 (defmacro retryable (&body body)
   (with-gensyms (retry-tag block-name)
     `(block ,block-name
-       (tagbody 
+       (tagbody
           ,retry-tag
           (restart-case
               (return-from ,block-name (progn  ,@body))
