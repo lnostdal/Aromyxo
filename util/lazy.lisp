@@ -16,7 +16,7 @@
 
 (declaim (inline get-lazy-value))
 (defun get-lazy-value (lazy-value)
-  (funcall (the function (%lazy-value-value lazy-value))))
+  (funcall (the function (%lazy-value-value-fn lazy-value))))
 
 
 (defmacro set-lazy-value (lazy-value &body value-form)
