@@ -2,7 +2,7 @@
 
 (in-package #:aromyxo)
 
-(declaim (optimize speed (safety 0)))
+(declaim (optimize speed (space 0) (safety 0)))
 
 
 (defstruct (lazy-value (:constructor %mk-lazy-value (value-fn))
