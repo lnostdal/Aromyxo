@@ -33,3 +33,11 @@
                           :collect `(,name (nth ,index ,list)))
        ,@body)))
 (export 'with-nth)
+
+
+(defmacro letp1 (bindings &body body)
+  "First value of BINDINGS is returned."
+  `(let ,bindings
+     (prog1 ,(caar bindings)
+       ,@body)))
+(export 'letp1)
