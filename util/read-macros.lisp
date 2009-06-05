@@ -3,6 +3,12 @@
 (in-package #:aromyxo)
 
 
+(set-dispatch-macro-character #\# #\l
+                              (lambda (stream char arg)
+                                (declare (ignore char arg))
+                                `(mk-lazy-value ,@(read stream))))
+
+
 (set-macro-character #\~
                      (lambda (stream char)
                        (declare (ignore char))
