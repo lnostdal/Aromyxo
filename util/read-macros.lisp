@@ -6,7 +6,7 @@
 (set-dispatch-macro-character #\# #\l
                               (lambda (stream char arg)
                                 (declare (ignore char arg))
-                                `(mk-lazy-value ,@(read stream))))
+                                `(mk-lazy-value ,(read stream))))
 
 
 (set-macro-character #\~
