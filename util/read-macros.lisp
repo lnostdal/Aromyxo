@@ -5,8 +5,10 @@
 
 (set-dispatch-macro-character #\# #\l
                               (lambda (stream char arg)
-                                (declare (ignore char arg))
-                                `(mk-lazy-value ,(read stream))))
+                                (declare (ignore char))
+                                (if arg
+                                    `(mk-lazy-value ,arg ,(read stream))
+                                    `(mk-lazy-value 1 ,(read stream)))))
 
 
 (set-macro-character #\~

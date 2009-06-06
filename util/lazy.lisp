@@ -5,23 +5,26 @@
 (declaim (optimize speed (space 0) (safety 0)))
 
 
-(defstruct (lazy-value (:constructor %mk-lazy-value (value-fn))
-                       (:conc-name :%lazy-value-))
-  (value-fn (lambda () (values)) :type function))
+(defstruct (lazy-value (:constructor %mk-lazy-value (level value-fn))
+                       (:conc-name :lv-))
+  (value-fn (lambda () (values)) :type function)
+  (cached-value nil :type t)
+  (level 1 :type integer))
 
 
-(defmacro mk-lazy-value (&body value-form)
-  `(%mk-lazy-value (lambda () ,@value-form)))
+(defmacro mk-lazy-value (lazy-level &body value-form)
+  `(%mk-lazy-value ,lazy-level
+                   (lambda () ,@value-form)))
 
 
 (declaim (inline get-lazy-value))
 (defun get-lazy-value (lazy-value)
-  (funcall (the function (%lazy-value-value-fn lazy-value))))
-
-
-(defmacro set-lazy-value (lazy-value &body value-form)
-  `(setf (%lazy-value-value-fn ,lazy-value)
-         (lambda () ,@value-form)))
+  (if (plusp (lv-level lazy-value))
+      (progn
+        (decf (lv-level lazy-value))
+        (setf (lv-cached-value lazy-value)
+              (funcall (the function (lv-value-fn lazy-value)))))
+      (lv-cached-value lazy-value)))
 
 
 (defmethod deref-expand ((arg symbol) (type (eql 'lazy-value)))
