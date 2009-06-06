@@ -3,9 +3,6 @@
 (in-package #:aromyxo)
 
 
-(make-dispatch-macro-character #\§)
-
-
 (set-dispatch-macro-character #\# #\l
                               (lambda (stream char arg)
                                 (declare (ignore char arg))
@@ -57,24 +54,3 @@
                        (declare (ignore char))
                        `(place-fn ,(read stream)))
                      t)
-
-
-(set-dispatch-macro-character #\§ #\c
-                              (lambda (stream char arg)
-                                (declare (ignore char arg))
-                                (let ((form (read stream)))
-                                  `(curry ',(first form) ,@(rest form)))))
-
-
-(set-dispatch-macro-character #\§ #\f
-                              (lambda (stream char arg)
-                                (declare (ignore char arg))
-                                (let ((form (read stream)))
-                                  `(funcall ,(first form) ,@(rest form)))))
-
-
-(set-dispatch-macro-character #\§ #\a
-                              (lambda (stream char arg)
-                                (declare (ignore char arg))
-                                (let ((form (read stream)))
-                                  `(apply ,(first form) ,@(rest form)))))
