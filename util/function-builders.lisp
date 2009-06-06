@@ -36,18 +36,19 @@
 
 
 (defun rbuild (expr)
-  (if (or (atom expr) 
+  (if (or (atom expr)
           (eq (car expr) 'lambda))
       expr
       (build-call (car expr) (cdr expr))))
 
 
-(defmacro fn (expr) 
+(defmacro fn (expr)
   `#',(rbuild expr))
 (export 'fn)
 
 
 (defmacro rlambda (args &body body)
+  "Note that Alexandria has a NAMED-LAMBDA macro."
   `(labels ((recur ,args
               ,@body))
      #'recur))

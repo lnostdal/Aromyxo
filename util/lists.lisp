@@ -59,7 +59,11 @@
 (export 'exchange)
 
 
+;; TODO: Maybe this doesn't make much sense; I got to take a look at DEFSETF and
+;; DEFINE-SETF-EXPANDER.
 (defmacro place-fn (place-form)
+  "This creates a closure which can write to and read from the \"place\"
+designated by PLACE-FORM."
   (with-gensyms (value value-supplied-p)
     `(lambda (&optional (,value nil ,value-supplied-p))
        (if ,value-supplied-p
