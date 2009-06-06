@@ -29,6 +29,10 @@
       form))
 
 
+(defmethod deref-expand ((arg symbol) (type (eql 'function)))
+  `(funcall ,arg))
+
+
 (defmethod deref ((fn function))
   (funcall fn))
 
