@@ -29,6 +29,14 @@
       form))
 
 
+(defmethod deref ((fn function))
+  (funcall fn))
+
+
+(defmethod (setf deref) (new-value (fn function))
+  (funcall fn new-value))
+
+
 
 ;; TODO: Finish this and add expanders to the appropriate places.
 #|
