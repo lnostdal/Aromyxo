@@ -1,0 +1,51 @@
+Stuff that is not lexical variables
+===================================
+
+  *hello*
+    Dynamic variables.
+
+
+  -hello-
+    Global variables (AMX:DEFINE-GLOBAL).
+
+
+  =hello=
+    Symbol macros.
+
+
+  +hello+
+    Constant values (ALEXANDRIA:DEFINE-CONSTANT).
+
+
+
+Other unusual looking stuff
+===========================
+
+Some of these are defined in SW-MVC and SW-STM.
+
+
+  #~42
+    Creates a SW-MVC:CELL with a value 42 in it.
+
+
+  ~something
+    Is short for (DEREF something). It is used for many things:
+
+      * Extracting the value of a SW-MVC:CELL or SW-MVC:FORMULA.
+      * Extracting or evaling a AMX:LAZY-VALUE.
+      * Extracting the value of a AMX:ATOMT.
+      * Extracting the value of a SW-STM:REF.
+        ....etc.
+
+
+  #λ(..)
+    Creates a SW-MVC:CELL with a SW-MVC:FORMULA in it. One could
+    also say #~λ(..) and it'd mean and do the same thing.
+
+
+  λ
+    Creates a SW-MVC:FORMULA.
+
+
+  #l
+    Creates a AMX:LAZY-VALUE. Use ~ to eval it or "extract its value".
