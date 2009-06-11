@@ -151,8 +151,7 @@
 
 
 (defmacro define-global (var value &optional doc)
-  `(eval-now
-     (sb-ext:defglobal ,var ,value ,doc)))
+  `(sb-ext:defglobal ,var ,value ,doc))
 (export 'define-global)
 
 
