@@ -24,7 +24,7 @@
              (:file "lazy")
              (:file "deref") ;; TODO: This actually contains the code for the WITH-OBJECT macro.
              (:file "read-macros")
-             (:file "lisp-object-metadata")
+             (:file "metadata")
              (:file "symbols")
              (:file "fflet")
              (:file "random")
