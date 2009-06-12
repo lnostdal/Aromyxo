@@ -49,3 +49,12 @@ Some of these are defined in SW-MVC and SW-STM.
 
   #l
     Creates a AMX:LAZY-VALUE. Use ~ to eval it or "extract its value".
+
+
+  ¤
+    This is used in combination with WITH-OBJECT, like this:
+
+      (defclass person () ((first-name) (last-name)))
+      (with-object person (format t "~A ~A~%" ¤first-name ¤last-name))
+
+    ..look at the macroexpansion of the WITH-OBJECT form to see what it does.
