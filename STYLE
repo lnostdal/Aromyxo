@@ -47,8 +47,9 @@ Some of these are defined in SW-MVC and SW-STM.
     Creates a SW-MVC:FORMULA.
 
 
-  #l
-    Creates a AMX:LAZY-VALUE. Use ~ to eval it or "extract its value".
+  #l(+ 40 2)
+    Creates a AMX:LAZY-VALUE with a closure in it that will yield 42 when
+    extracted by the ~ read macro.
 
 
   ¤
@@ -58,3 +59,8 @@ Some of these are defined in SW-MVC and SW-STM.
       (with-object person (format t "~A ~A~%" ¤first-name ¤last-name))
 
     ..look at the macroexpansion of the WITH-OBJECT form to see what it does.
+
+
+  ↑
+    This is short for (WITH-OBJECT (SELF) ..) and is commonly used inside
+    DEFCLASS forms.

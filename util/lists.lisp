@@ -59,6 +59,7 @@
 (export 'exchange)
 
 
+;; TODO: This stuff is stupid.
 (defun insert (element list-place &key
                (after nil after-supplied-p)
                (before nil before-supplied-p)
