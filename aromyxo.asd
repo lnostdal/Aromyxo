@@ -11,7 +11,8 @@
                :cl-utilities :alexandria
                :md5
                :bordeaux-threads
-               :cl-ppcre)
+               :cl-ppcre
+               :parse-number)
 
   :serial t
   :components

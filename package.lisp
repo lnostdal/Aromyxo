@@ -8,7 +8,9 @@
    #:closer-mop
    #:cl-utilities #:alexandria
    #:bordeaux-threads #:sb-thread
-   )
+   #:parse-number)
+
+
 
 
   ;; concurrency/
@@ -71,6 +73,9 @@
    #:full-deref
 
    #:lazy-value #:mk-lazy-value
+
+   #:parse-number
+   #:parse-real-number
    )
 
 
