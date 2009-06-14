@@ -7,9 +7,7 @@
    #:cl
    #:closer-mop
    #:cl-utilities #:alexandria
-   #:bordeaux-threads #:sb-thread
-   #:parse-number)
-
+   #:bordeaux-threads #:sb-thread)
 
 
 

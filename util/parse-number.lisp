@@ -30,14 +30,7 @@
 ;;;; OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 ;;;; SUCH DAMAGE.
 
-(defpackage #:org.mapcar.parse-number
-  (:use #:common-lisp)
-  (:nicknames #:parse-number)
-  (:export #:parse-number
-           #:parse-real-number
-           #:parse-positive-real-number))
-
-(in-package #:org.mapcar.parse-number)
+(in-package #:aromyxo)
 
 (define-condition invalid-number (error)
   ((value :reader value
