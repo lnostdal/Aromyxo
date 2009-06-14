@@ -11,8 +11,7 @@
                :cl-utilities :alexandria
                :md5
                :bordeaux-threads
-               :cl-ppcre
-               :parse-number)
+               :cl-ppcre)
 
   :serial t
   :components
@@ -24,6 +23,7 @@
              (:file "printing")
              (:file "lazy")
              (:file "deref") ;; TODO: This actually contains the code for the WITH-OBJECT macro.
+             (:file "parse-number")
              (:file "read-macros")
              (:file "metadata")
              (:file "symbols")
