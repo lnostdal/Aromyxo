@@ -9,22 +9,28 @@
                        (:conc-name :lv-))
   (value-fn (lambda () (values)) :type function)
   (cached-value nil :type t)
-  (level 1 :type integer))
+  (level 1 :type (or null integer)))
 
 
 (defmacro mk-lazy-value (lazy-level &body value-form)
-  `(%mk-lazy-value ,lazy-level
+  `(%mk-lazy-value ,(if (zerop lazy-level)
+                        nil
+                        lazy-level)
                    (lambda () ,@value-form)))
 
 
 (declaim (inline get-lazy-value))
 (defun get-lazy-value (lazy-value)
-  (if (plusp (lv-level lazy-value))
-      (progn
-        (decf (lv-level lazy-value))
+  (let ((level (lv-level lazy-value)))
+    (if level
+        (if (plusp (lv-level lazy-value))
+            (progn
+              (decf (lv-level lazy-value))
+              (setf (lv-cached-value lazy-value)
+                    (funcall (the function (lv-value-fn lazy-value)))))
+            (lv-cached-value lazy-value))
         (setf (lv-cached-value lazy-value)
-              (funcall (the function (lv-value-fn lazy-value)))))
-      (lv-cached-value lazy-value)))
+              (funcall (the function (lv-value-fn lazy-value)))))))
 
 
 (defmethod deref-expand ((arg symbol) (type (eql 'lazy-value)))
