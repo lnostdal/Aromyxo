@@ -114,3 +114,11 @@ evaluates to."
       (cond ,@(mapcar #'(lambda (cl) (>casex g cl))
                       clauses)))))
 (export '>case)
+
+
+(defmacro any (&rest forms)
+  "A version of CL:OR that doesn't short-circuit evaluation."
+  (with-gensyms (elt)
+    `(dolist (,elt (list ,@forms))
+       (when ,elt (return ,elt)))))
+(export 'any)
