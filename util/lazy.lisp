@@ -13,10 +13,11 @@
 
 
 (defmacro mk-lazy-value (lazy-level &body value-form)
-  `(%mk-lazy-value ,(if (zerop lazy-level)
-                        nil
-                        lazy-level)
-                   (lambda () ,@value-form)))
+  (once-only (lazy-level)
+    `(%mk-lazy-value (if (zerop ,lazy-level)
+                         nil
+                         ,lazy-level)
+                     (lambda () ,@value-form))))
 
 
 (declaim (inline get-lazy-value))
