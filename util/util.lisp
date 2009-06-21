@@ -157,3 +157,14 @@
 
 (sb-alien:define-alien-variable dynamic-space-size sb-alien:int)
 (export 'dynamic-space-size)
+
+
+(defmacro mk (&rest args)
+  `(make-instance ,@args))
+(export 'mk)
+
+
+
+(defmacro compile-and-execute (&body body)
+  `(funcall (compile nil `(lambda () ,,@body))))
+(export 'compile-and-execute)
