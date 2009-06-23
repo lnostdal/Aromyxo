@@ -31,3 +31,16 @@
 (defmacro type-info (name &environment env)
   (cdr (assoc 'type (third (multiple-value-list (sb-cltl2:variable-information name env))))))
 (export 'type-info)
+
+
+(define-symbol-macro =lex-function-name= (lex-function-name))
+(defmacro lex-function-name ()
+  `',(sb-c::lambda-%source-name (sb-c::lexenv-lambda sb-c:*lexenv*)))
+(export '=lex-function-name=)
+
+
+(define-symbol-macro =lex-variable-names= (lex-variable-names))
+(defmacro lex-variable-names ()
+  `',(loop :for var :in (reverse (sb-c::lexenv-vars sb-c:*lexenv*))
+        :collect (car var)))
+(export '=lex-variable-names=)
