@@ -25,6 +25,7 @@
              (:file "deref") ;; TODO: This actually contains the code for the WITH-OBJECT macro.
              (:file "parse-number")
              (:file "read-macros")
+             (:file "add-to")
              (:file "metadata")
              (:file "symbols")
              (:file "fflet")
