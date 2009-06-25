@@ -28,9 +28,11 @@
 (export 'symbol-macro-bound-p)
 
 
-(defmacro type-info (name &environment env)
-  (cdr (assoc 'type (third (multiple-value-list (sb-cltl2:variable-information name env))))))
-(export 'type-info)
+(defmacro lex-type-info (name &optional env)
+  `(cdr (assoc 'type (third (multiple-value-list
+                             (sb-cltl2:variable-information
+                              ,name ,(or env sb-c:*lexenv*)))))))
+(export 'lex-type-info)
 
 
 (define-symbol-macro =lex-function-name= (lex-function-name))
