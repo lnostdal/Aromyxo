@@ -84,7 +84,7 @@ evaluates to."
   "Does the same as the macro `in', but choices are quoted."
   `(in (,obj :test ,test :key ,key) ,@(mapcar (lambda (a)
                                      `',a)
-                                   choices))) 
+                                   choices)))
 (export 'inq)
 
 
