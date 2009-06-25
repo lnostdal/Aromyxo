@@ -17,7 +17,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun mkstr (&rest args) ;; TODO: Rename to rstr to contrast with cstr below?
-  "Run-time string generation." 
+  "Run-time string generation."
+  (declare (optimize speed (safety 0))
+           (dynamic-extent args))
   (with-output-to-string (s)
     (dolist (a args)
       (princ a s))))

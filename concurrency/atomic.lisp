@@ -2,7 +2,7 @@
 
 (in-package #:aromyxo)
 
-(declaim (optimize speed))
+(declaim (optimize speed (safety 1)))
 
 
 (defstruct (atomt (:constructor mk-atom (&optional value))
@@ -33,7 +33,7 @@ Note that NEW might be evaluated more than once."
 
 
 (defmacro swap-atom (atom new)
-  "NEW must be something that yields a new and unique, on an EQ basis, value.
+  "NEW must be a value that yields T for (EQ NEW NEW).
 Note that NEW might be evaluated more than once."
   (once-only (atom)
     `(swap (atomt-value ,atom) ,new)))
@@ -43,7 +43,7 @@ Note that NEW might be evaluated more than once."
 (declaim (inline swap-atom-fn))
 (defun swap-atom-fn (atom fn)
   "FN is a function that accepts one argument; the old value of ATOM. It must
-return a new and unique, on an EQ basis, value. Note that it might be called
+return a value that yields T for (EQ VALUE VALUE). Note that it might be called
 more than once and the old value passed to the function might change for each
 call."
   (declare (atomt atom)
