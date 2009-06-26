@@ -50,14 +50,10 @@
         :collect (car var)))
 (export '=lex-variable-names=)
 
-(define-symbol-macro =lex-variable-types= (lex-variable-types))
 
-
-;; Note:
-;; (sb-kernel::numeric-type-class (sb-kernel:make-numeric-type :class 'integer)) => INTEGER
 (define-symbol-macro =lex-variable-types= (lex-variable-types))
 (defmacro lex-variable-types ()
   `(loop :for lambda-var :in ',(loop :for var :in (reverse (sb-c::lexenv-vars sb-c:*lexenv*))
                             :collect (cdr var))
-      :collect (sb-c::lambda-var-type lambda-var)))
+      :collect (sb-kernel:type-specifier (sb-c::lambda-var-type lambda-var))))
 (export '=lex-variable-types=)
