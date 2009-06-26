@@ -13,14 +13,37 @@
 (export 'symbol-macro-bound-p)
 
 
-(defmacro lex-type-info (name &optional env)
-  (once-only (name)
-    (let ((env (or env sb-c:*lexenv*)))
-      `(let ((sb-c:*lexenv* ,env))
-         (if-let ((lambda-var (sb-c:lexenv-find ,name vars)))
-           (sb-kernel:type-specifier (sb-c::lambda-var-type lambda-var))
-           nil)))))
-(export 'lex-type-info)
+(defmacro lex-info (name kind &optional env)
+  `(when-let* ((sb-c:*lexenv* ,(or env sb-c:*lexenv*))
+               (lex-info (sb-c:lexenv-find ,name ,kind)))
+     (sb-kernel:type-specifier (sb-c::leaf-type lex-info))))
+(export 'lex-info)
+
+
+(defmacro lex-var-info (name &optional (env nil env-supplied-p))
+  (if env-supplied-p
+      `(lex-info ,name vars ,env)
+      `(lex-info ,name vars)))
+(export 'lex-var-info)
+
+
+(defmacro lex-fun-info (name &optional (env nil env-supplied-p))
+  (if env-supplied-p
+      `(lex-info ,name funs ,env)
+      `(lex-info ,name funs)))
+(export 'lex-fun-info)
+
+
+;; TODO: This doesn't belong here; it extracts information about non-lexical variables.
+(defun var-info (name)
+  (sb-kernel:type-specifier (sb-c::info :variable :type name)))
+(export 'var-info)
+
+
+;; TODO: This doesn't fit here; it extracts information about non-lexical functions.
+(defun fun-info (name)
+  (sb-kernel:type-specifier (sb-c::info :function :type name)))
+(export 'fun-info)
 
 
 (define-symbol-macro =lex-function-name= (lex-function-name))
