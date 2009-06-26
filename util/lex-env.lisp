@@ -29,9 +29,12 @@
 
 
 (defmacro lex-type-info (name &optional env)
-  `(cdr (assoc 'type (third (multiple-value-list
-                             (sb-cltl2:variable-information
-                              ,name ,(or env sb-c:*lexenv*)))))))
+  (once-only (name)
+    (let ((env (or env sb-c:*lexenv*)))
+      `(let ((sb-c:*lexenv* ,env))
+         (if-let ((lambda-var (sb-c:lexenv-find ,name vars)))
+           (sb-kernel:type-specifier (sb-c::lambda-var-type lambda-var))
+           nil)))))
 (export 'lex-type-info)
 
 
