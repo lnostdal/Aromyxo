@@ -20,6 +20,7 @@
             :serial t
             :components
             ((:file "util") ;; TODO: This also contains some code. Should probably move stuff around.
+             (:file "lex-env")
              (:file "printing")
              (:file "lazy")
              (:file "deref") ;; TODO: This actually contains the code for the WITH-OBJECT macro.
@@ -50,7 +51,6 @@
              (:file "clos-mutex-slot-mixin")
              ;;(:file "clos-serialized-object-mixin")
              ;;(:file "url") ;; TODO: Maybe just delete this thing.
-             (:file "lex-env")
              (:file "object")
              (:file "cached-object")
              (:file "gc")

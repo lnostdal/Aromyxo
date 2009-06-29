@@ -9,20 +9,14 @@
 (export 'with-object)
 
 
-(defun full-deref (object)
-  (let ((value (deref object)))
-    (loop :while (find-method #'deref nil (list (class-of value)) nil)
-       :do (setf value (deref value)))
-    value))
-
-
-(defmethod deref-expand ((arg symbol) type)
-  nil)
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (defmethod deref-expand ((arg symbol) type)
+    nil))
 
 
 (define-compiler-macro deref (&whole form arg &environment env)
   (if (atom arg)
-      (let ((type (cdr (assoc 'type (third (multiple-value-list (sb-cltl2:variable-information arg env)))))))
+      (let ((type (lex-var-info arg env)))
         (if-let (body (deref-expand arg type))
           body
           form))
@@ -40,6 +34,12 @@
 (defmethod (setf deref) (new-value (fn function))
   (funcall fn new-value))
 
+
+(defun full-deref (object)
+  (let ((value (deref object)))
+    (loop :while (find-method #'deref nil (list (class-of value)) nil)
+       :do (setf value (deref value)))
+    value))
 
 
 ;; TODO: Finish this and add expanders to the appropriate places.
