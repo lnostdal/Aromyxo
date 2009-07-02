@@ -22,7 +22,6 @@
             ((:file "util") ;; TODO: This also contains some code. Should probably move stuff around.
              (:file "lex-env")
              (:file "printing")
-             (:file "lazy")
              (:file "deref") ;; TODO: This actually contains the code for the WITH-OBJECT macro.
              (:file "parse-number")
              (:file "read-macros")
