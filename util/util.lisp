@@ -164,7 +164,19 @@
 (export 'mk)
 
 
-
 (defmacro compile-and-execute (&body body)
   `(funcall (compile nil `(lambda () ,,@body))))
 (export 'compile-and-execute)
+
+
+
+(defmacro always-continue (&body body)
+  "On an ERROR condition, always look for a
+CONTINUE restart and dispatch to it if found."
+  (with-gensyms (c)
+    `(handler-bind ((error (lambda (,c)
+                             (if (find-restart 'continue)
+                                 (invoke-restart 'continue)
+                                 (error ,c)))))
+       ,@body)))
+(export 'always-continue)
