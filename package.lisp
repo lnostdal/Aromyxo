@@ -3,6 +3,8 @@
 
 (defpackage #:aromyxo
   (:nicknames :amx)
+
+  (:import-from #:sb-ext #:truly-the)
   (:use
    #:cl
    #:closer-mop
@@ -74,6 +76,8 @@
 
    #:parse-number
    #:parse-real-number
+
+   #:truly-the
    )
 
 
