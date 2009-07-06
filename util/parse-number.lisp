@@ -42,6 +42,7 @@
   (:report (lambda (c s)
              (format s "Invalid number: ~S [Reason: ~A]"
                      (value c) (reason c)))))
+(export 'invalid-number)
 
 (declaim (inline parse-integer-and-places))
 (defun parse-integer-and-places (string start end &key (radix 10))
