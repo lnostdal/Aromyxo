@@ -5,6 +5,7 @@
 
 (defmacro with-object (object &body body)
   `(let ((%with-object ,object))
+     (declare (ignorable %with-object))
      ,@body))
 (export 'with-object)
 
