@@ -3,8 +3,10 @@
 (in-package #:aromyxo)
 
 
-(define-global -delay-gc-
-    (make-hash-table :test #'eq :weakness :value))
+(define-variable -delay-gc-
+    :kind :global
+    :value (make-hash-table :test #'eq :weakness :value)
+    :type hash-table)
 
 
 (defun delay-gc (until-gc-of-object &rest objects)

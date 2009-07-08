@@ -150,11 +150,6 @@
 (export 'muffle-compiler-note)
 
 
-(defmacro define-global (var value &optional doc)
-  `(sb-ext:defglobal ,var ,value ,doc))
-(export 'define-global)
-
-
 (sb-alien:define-alien-variable dynamic-space-size sb-alien:int)
 (export 'dynamic-space-size)
 

@@ -20,6 +20,7 @@
             :serial t
             :components
             ((:file "util") ;; TODO: This also contains some code. Should probably move stuff around.
+             (:file "define-variable")
              (:file "lex-env")
              (:file "printing")
              (:file "deref") ;; TODO: This actually contains the code for the WITH-OBJECT macro.

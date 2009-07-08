@@ -6,8 +6,10 @@
 
 
 ;; [LISP-OBJ -> [KEY -> VALUE]]
-(define-global +lisp-obj->metadata+
-    (make-hash-table :test #'eq :weakness :key))
+(define-variable +lisp-obj->metadata+
+    :kind :global
+    :value (make-hash-table :test #'eq :weakness :key)
+    :type hash-table)
 
 
 (defun set-metadata (lisp-obj key value)
