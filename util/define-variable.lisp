@@ -28,6 +28,7 @@
 
             (:constant
              (assert value-supplied-p)
+             (nilf always-boundp)
              `(define-constant ,name ,value
                 ,@(when test-supplied-p `(:test ,test))
                 ,@(when doc-supplied-p `(:documentation ,doc))))
