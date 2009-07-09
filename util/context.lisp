@@ -41,3 +41,16 @@
      (prog1 ,(caar bindings)
        ,@body)))
 (export 'letp1)
+
+
+(defmacro with (it &body body)
+  `(let ((it ,it))
+     ,@body))
+(export '(with it))
+
+
+(defmacro withp (it &body body)
+  `(let ((it ,it))
+     (when (progn ,@body)
+       it)))
+(export '(withp it))
