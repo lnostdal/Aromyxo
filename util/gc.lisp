@@ -13,7 +13,7 @@
   "Keep OBJECT around for at least as long as PARENT is around."
   (sb-ext:with-locked-hash-table (-delay-gc-)
     (setf (gethash object -delay-gc-) parent)))
-(export 'gc)
+(export 'delay-gc)
 
 
 (defun delay-gc* (parent objects)
