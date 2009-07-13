@@ -49,6 +49,12 @@
 (export '(with it))
 
 
+(defmacro with1 (it &body body)
+  `(letp1 ((it ,it))
+     ,@body))
+(export 'with1)
+
+
 (defmacro withp (it &body body)
   `(let ((it ,it))
      (when (progn ,@body)
