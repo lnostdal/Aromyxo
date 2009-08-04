@@ -164,7 +164,6 @@
 (export 'compile-and-execute)
 
 
-
 (defmacro always-continue (&body body)
   "On an ERROR condition, always look for a
 CONTINUE restart and dispatch to it if found."
@@ -175,3 +174,13 @@ CONTINUE restart and dispatch to it if found."
                                  (error ,c)))))
        ,@body)))
 (export 'always-continue)
+
+
+(defun stars (num of-possible)
+  (declare (integer num of-possible))
+  (with-output-to-string (ss)
+    (dotimes (i num)
+      (princ #\★ ss))
+    (dotimes (i (- of-possible num))
+      (princ #\☆ ss))))
+(export 'stars)
