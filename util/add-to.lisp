@@ -3,8 +3,7 @@
 (in-package :aromyxo)
 
 
-(defgeneric add-to* (target list)
-  )
+(defgeneric add-to* (target items))
 (export 'add-to*)
 
 

@@ -33,7 +33,7 @@
 
 
 (defun slots-of (class-sym)
-  (mapcar #'closer-mop:slot-definition-name 
+  (mapcar #'closer-mop:slot-definition-name
           (closer-mop:class-slots (find-class class-sym))))
 (export 'slots-of)
 
@@ -67,7 +67,6 @@ Inherit from the class SELF-REF to do things like:
   "Returns the instance currently being constructed."
   (first *self-refs*))
 (export 'self)
-
 
 
 (defmacro with-direct-slots-in (instance slot-value-sym &body body)

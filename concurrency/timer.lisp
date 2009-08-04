@@ -4,9 +4,10 @@
 
 
 (defun mk-delay-callback (timeout callback &optional (timer-thread-arg t))
-  "CALLBACK: Function taking 0 args.
-:TIMEOUT: Seconds.
+  "TIMEOUT: Seconds.
+CALLBACK: Function taking 0 args.
 :TIMER-THREAD-ARG: Passed to :THREAD keyarg of SB-EXT:MAKE-TIMER.
+
 Returns two values: A function and a timer.
 Calling the function will call CALLBACK immediately and unschedule the call of
 CALLBACK later. To never call CALLBACK at all, pass the returned timer to
@@ -57,4 +58,4 @@ SB-EXT:UNSCHEDULE-TIMER."
 (defun unschedule (timer)
   (sb-ext:unschedule-timer timer))
 (export 'unschedule)
-|#                             
+|#

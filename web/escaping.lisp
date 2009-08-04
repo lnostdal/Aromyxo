@@ -10,7 +10,7 @@
            (string string))
   (with-output-to-string (out)
     (with-input-from-string (in string)
-      (loop :for char = (read-char in nil nil)
+      (loop :for char = (read-char in nil)
          :while char
          :do (case char
                ((#\<) (write-string "&lt;" out))
