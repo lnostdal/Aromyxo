@@ -57,6 +57,6 @@
 
 (defmacro withp (it &body body)
   `(let ((it ,it))
-     (when (progn ,@body)
+     (when (and it (progn ,@body))
        it)))
 (export '(withp it))
