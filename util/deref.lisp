@@ -36,6 +36,15 @@
   (funcall fn new-value))
 
 
+(defmethod deref ((list list))
+  (mapcar #'funcall list))
+
+
+(defmethod (setf deref) (arg (list list))
+  (mapcar (lambda (fn) (funcall fn arg))
+          list))
+
+
 (defun full-deref (object)
   (let ((value (deref object)))
     (loop :while (find-method #'deref nil (list (class-of value)) nil)
