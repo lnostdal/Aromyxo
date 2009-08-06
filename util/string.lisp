@@ -38,3 +38,9 @@
   ;; aks44; i stealed it .. lol
   `(concatenate 'string ,@args))
 (export 'catstr)
+
+
+(defmethod string<- (obj)
+  (let ((*print-pretty* nil))
+    (princ-to-string obj)))
+(export 'string<-)
