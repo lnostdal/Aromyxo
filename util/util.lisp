@@ -164,6 +164,13 @@
 (export 'compile-and-execute)
 
 
+(defmacro with-continue-restart (&body body)
+  `(restart-case
+       (progn ,@body)
+     (continue)))
+(export 'with-continue-restart)
+
+
 (defmacro always-continue (&body body)
   "On an ERROR condition, always look for a
 CONTINUE restart and dispatch to it if found."
