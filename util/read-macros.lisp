@@ -2,12 +2,18 @@
 
 (in-package #:aromyxo)
 
+;; Used by both SW-STM and SW-MVC.
+(eval-now
+  (ignore-errors ;; In case we recompile.
+    (make-dispatch-macro-character #\λ)))
+
 
 (set-macro-character #\~
                      (lambda (stream char)
                        (declare (ignore char))
                        (let ((form (read stream)))
                          (if (and (listp form) (listp (first form)))
+                             ;; TODO: I don't seem to be using this syntax anywhere after all.
                              `(funcall ,(first form) ,@(rest form))
                              `(deref ,form))))
                      t)
