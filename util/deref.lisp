@@ -15,6 +15,7 @@
     nil))
 
 
+;; TODO: Finish this.
 (define-compiler-macro deref (&whole form arg &environment env)
   (if (atom arg)
       (let ((type (lex-var-info arg env)))
