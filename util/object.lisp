@@ -123,3 +123,34 @@
                    :base 36))
 (export 'id-str-of)
 |#
+
+
+
+
+(define-variable -id-generator-
+    :kind :global
+    :value (mk-id-generator))
+(export '-id-generator-)
+
+
+(defclass id-mixin ()
+  ((id :reader id-of
+       :type string)))
+(export '(id-mixin id id-of))
+
+
+(defmethod initialize-instance :before ((obj id-mixin) &key (id nil id-supplied-p))
+  (declare (optimize speed))
+  (setf (slot-value obj 'id)
+        (if id-supplied-p
+            id
+            (catstr (string (type-of obj)) "-" (id-generator-next-str -id-generator-)))))
+
+(defmethod print-object :around ((id-mixin id-mixin) stream)
+  (print-unreadable-object (id-mixin stream :type t :identity nil)
+    (format stream ":ID ~S" (id-of id-mixin))
+    (call-next-method)))
+
+
+(defmethod print-object ((id-mixin id-mixin) stream)
+  )
