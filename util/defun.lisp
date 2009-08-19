@@ -12,8 +12,9 @@ TODO: Add support for type declarations for stuff like this:
 (defmacro defn (name args &body body)
   (let ((arg-types nil)
         (arg-names nil)
-        (rtype (when (sequence-of-length-p args 2)
-                 (prog1 (first args) (setf args (second args))))))
+        (rtype (if (sequence-of-length-p args 2)
+                   (prog1 (first args) (setf args (second args)))
+                   (prog1 nil (setf args (first args))))))
 
     ;; Parse argument list (ARGS).
     (dolist (arg args (setf arg-types (nreverse arg-types)
@@ -42,7 +43,7 @@ TODO: Add support for type declarations for stuff like this:
       (when rtype
         (push `(values ,rtype &optional) declarations))
 
-      ;; Returned expansion/code.
+
       `(progn
          ;; Compile-time type checking. CL is wonderful! :)
          ,(when (or arg-types rtype)
@@ -54,3 +55,31 @@ TODO: Add support for type declarations for stuff like this:
            ,@(when declarations `((declare ,@declarations)))
            ,@body)))))
 (export 'defn)
+
+
+
+#|
+AMX> (macroexpand-1 '(defn sum (((x fixnum) (y fixnum) z))
+                      (+ x y z)))
+(PROGN
+ (PROCLAIM '(FTYPE #'(FIXNUM FIXNUM T) SUM))
+ (DEFUN SUM (X Y Z)
+   (DECLARE (T Z)
+            (FIXNUM Y)
+            (FIXNUM X))
+   (+ X Y Z)))
+T
+
+AMX> (macroexpand-1 '(defn sum (fixnum ((x fixnum) (y fixnum) z))
+                      (+ x y z)))
+(PROGN
+ (PROCLAIM '(FTYPE (FUNCTION (FIXNUM FIXNUM T) (VALUES FIXNUM &OPTIONAL)) SUM))
+ (DEFUN SUM (X Y Z)
+   (DECLARE (VALUES FIXNUM &OPTIONAL)
+            (T Z)
+            (FIXNUM Y)
+            (FIXNUM X))
+   (+ X Y Z)))
+T
+AMX>
+|#
