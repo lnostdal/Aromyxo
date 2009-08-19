@@ -4,10 +4,10 @@
 
 
 ;; From Hunchentoot.
-(defun escape-for-html (string)
+(declaim (inline escape-for-html))
+(defn escape-for-html (string ((string string)))
   "Escapes the characters #\\<, #\\>, #\\', #\\\", and #\\& for HTML output."
-  (declare (optimize speed)
-           (string string))
+  (declare (optimize speed))
   (with-output-to-string (out)
     (with-input-from-string (in string)
       (loop :for char = (read-char in nil)
@@ -19,3 +19,12 @@
                ((#\') (write-string "&#039;" out))
                ((#\&) (write-string "&amp;" out))
                (otherwise (write-char char out)))))))
+
+
+(declaim (inline htmlize))
+(defn htmlize (string (obj))
+  (declare (optimize speed))
+  (let ((*print-pretty* nil))
+    (escape-for-html (if (stringp obj)
+                         obj
+                         (princ-to-string obj)))))

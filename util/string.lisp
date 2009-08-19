@@ -41,6 +41,8 @@
 
 
 (defmethod string<- (obj)
-  (let ((*print-pretty* nil))
-    (princ-to-string obj)))
+  (if (stringp obj)
+      obj
+      (let ((*print-pretty* nil))
+        (princ-to-string obj))))
 (export 'string<-)

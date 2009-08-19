@@ -86,7 +86,8 @@
   (:export
    #:rfc-1123-date #:iso-time
    #:url-decode #:url-encode
-   #:escape-for-html)
+   #:escape-for-html
+   #:htmlize)
   )
 
 
