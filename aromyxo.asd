@@ -55,7 +55,9 @@
              (:file "cached-object")
              (:file "gc")
              (:file "pointer")
-             (:file "connection")))
+             #|(:file "connection")|#
+             (:file "defun")
+             ))
 
 
    (:module concurrency
