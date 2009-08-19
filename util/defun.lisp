@@ -42,9 +42,12 @@ TODO: Add support for type declarations for stuff like this:
                  (push `(,type ,name) declarations))
            arg-names arg-types)
 
-      ;; Generate type declaration for return value. TODO: Add support for multiple return values.
+      ;; Generate type declaration for return value.
+      ;; TODO: Add support for multiple return values.
+      ;; TODO: Support for no return values does not seem to be working atm.; (VALUES) have no effect, and
+      ;; (VALUES &OPTIONAL) is invalid according to SBCL.
       (when rtype
-        (push `(values ,rtype &optional) declarations))
+        (push `(values ,@(unless (eq 'null rtype) `(,rtype &optional))) declarations))
 
 
       `(progn
