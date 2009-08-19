@@ -27,12 +27,15 @@ TODO: Add support for type declarations for stuff like this:
             (push arg arg-names)
             (push t arg-types))))
 
-    ;; Check for old CL style declarations.
+    ;; Check for "old" CL style type declarations and optimization.
     (multiple-value-bind (body declarations doc)
-        (parse-body body :documentation t :whole t)
+        (parse-body body)
       (dolist (declaration declarations)
-        (warn "Found \"old\" CL style declaration in AMX:DEFN form: ~S~%It will be ignored.~%" declaration))
-      (nilf declarations)
+        (if (eq 'optimize (caadr declaration))
+            (setf (car (member declaration declarations)) (cadr declaration))
+            (progn
+              (warn "Found \"old\" CL style declaration in AMX:DEFN form: ~S~%It will be ignored.~%" declaration)
+              (deletef declarations declaration :test #'eq))))
 
       ;; Generate type declarations for ARGS.
       (map nil (lambda (name type)
@@ -47,8 +50,9 @@ TODO: Add support for type declarations for stuff like this:
       `(progn
          ;; Compile-time type checking. CL is wonderful! :)
          ,(when (or arg-types rtype)
-           `(proclaim '(ftype (function (,@arg-types) ,@(when rtype `(,(first declarations))))
-                        ,name)))
+           `(eval-now
+              (proclaim '(ftype (function (,@arg-types) ,@(when rtype `(,(first declarations))))
+                          ,name))))
          (defun ,name ,arg-names
            ,@(when doc doc)
            ;; Run-time type checking, and/or generation of optimized/specialized code.
