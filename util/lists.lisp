@@ -33,6 +33,7 @@
 (export 'mklst)
 
 
+(declaim (inline group))
 (defun group (n source)
   "Example:
  (group '(a b c d e f) 2) => ((A B) (C D) (E F))

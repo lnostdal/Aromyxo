@@ -5,7 +5,8 @@
 
 ;; From Hunchentoot.
 (defun rfc-1123-date (&optional (time (get-universal-time)))
-  (declare (optimize speed))
+  (declare (optimize speed)
+           (unsigned-byte time))
   (multiple-value-bind (second minute hour date month year day-of-week)
       (decode-universal-time time 0)
     (format nil "~A, ~2,'0d ~A ~4d ~2,'0d:~2,'0d:~2,'0d GMT"
