@@ -8,27 +8,29 @@
                            (kind :var)
                            (doc nil doc-supplied-p)
                            (type nil type-supplied-p)
-                           (always-boundp value-supplied-p)
+                           always-boundp
                            (test nil test-supplied-p))
   ;; TODO: Slimes indentation is horrible here.
   `(progn
+
      ,(when type-supplied-p
             `(eval-now (proclaim '(,type ,name))))
 
      ,(case kind
             (:var
-             `(defvar ,name
-                ,@(when value-supplied-p `(,value))
-                ,@(when doc-supplied-p `(,doc))))
+             `(eval-now
+                (defvar ,name
+                  ,@(when (or always-boundp value-supplied-p)
+                          `(,value)))
+                ,(when doc-supplied-p
+                       `(setf (documentation ',name 'variable) ,doc))))
 
             (:parameter
-             (assert value-supplied-p)
-             `(defparameter ,name ,value
-                ,@(when doc-supplied-p `(,doc))))
+             `(eval-now
+                (defparameter ,name ,value
+                  ,@(when doc-supplied-p `(,doc)))))
 
             (:constant
-             (assert value-supplied-p)
-             (setf always-boundp nil)
              `(define-constant ,name ,value
                 ,@(when test-supplied-p `(:test ,test))
                 ,@(when doc-supplied-p `(:documentation ,doc))))
@@ -37,9 +39,8 @@
              `(sb-ext:defglobal ,name ,value
                 ,@(when doc-supplied-p `(,doc)))))
 
-     ,@(when always-boundp
-             (assert value-supplied-p)
-             `((proclaim '(sb-ext:always-bound ,name))))))
+     ,@(when (and always-boundp (eq kind (or :var :parameter)))
+             `((eval-now (proclaim '(sb-ext:always-bound ,name)))))))
 (export 'define-variable)
 
 
