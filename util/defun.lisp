@@ -47,7 +47,9 @@ TODO: Add support for type declarations for stuff like this:
       ;; TODO: Support for no return values does not seem to be working atm.; (VALUES) have no effect, and
       ;; (VALUES &OPTIONAL) is invalid according to SBCL.
       (when rtype
-        (push `(values ,@(unless (eq 'null rtype) `(,rtype &optional))) declarations))
+        (push `(values ,@(unless (eq 'null rtype) `(,rtype))
+                       &optional)
+              declarations))
 
 
       `(progn
@@ -59,7 +61,9 @@ TODO: Add support for type declarations for stuff like this:
          (defun ,name ,arg-names
            ,@(when doc doc)
            ;; Run-time type checking, and/or generation of optimized/specialized code.
-           ,@(when declarations `((declare ,@declarations)))
+           ,@(when declarations `((declare ,@(remove-if (lambda (decl)
+                                                          (equal '(values &optional) decl))
+                                                        declarations))))
            ,@body)))))
 (export 'defn)
 
