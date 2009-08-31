@@ -5,14 +5,16 @@
 
 (defmacro define-variable (name &key
                            (value nil value-supplied-p)
-                           (kind :var)
+                           (kind (case (char (string name) 0)
+                                   (#\+ :constant)
+                                   (#\- :global)
+                                   (t :var)))
                            (doc nil doc-supplied-p)
                            (type nil type-supplied-p)
-                           always-boundp
+                           (always-boundp value-supplied-p)
                            (test nil test-supplied-p))
   ;; TODO: Slimes indentation is horrible here.
   `(progn
-
      ,(when type-supplied-p
             `(eval-now (proclaim '(,type ,name))))
 
@@ -22,8 +24,8 @@
                 (defvar ,name
                   ,@(when (or always-boundp value-supplied-p)
                           `(,value)))
-                ,(when doc-supplied-p
-                       `(setf (documentation ',name 'variable) ,doc))))
+                ,@(when doc-supplied-p
+                        `((setf (documentation ',name 'variable) ,doc)))))
 
             (:parameter
              `(eval-now
