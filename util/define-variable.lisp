@@ -19,33 +19,33 @@
   `(progn
      ,@(when type-supplied-p
              `((eval-now (proclaim '(,type ,name)))))
+     (eval-now
+       (prog1
+           ,(case kind
+                  (:var
+                   `(eval-now
+                      (prog1 (defvar ,name
+                               ,@(when (or always-boundp value-supplied-p)
+                                       `(,value))))
+                      ,@(when doc-supplied-p
+                              `((setf (documentation ',name 'variable) ,doc)))))
 
-     (prog1
-         ,(case kind
-                (:var
-                 `(eval-now
-                    (prog1 (defvar ,name
-                             ,@(when (or always-boundp value-supplied-p)
-                                     `(,value))))
-                    ,@(when doc-supplied-p
-                            `((setf (documentation ',name 'variable) ,doc)))))
+                  (:parameter
+                   `(eval-now
+                      (defparameter ,name ,value
+                        ,@(when doc-supplied-p `(,doc)))))
 
-                (:parameter
-                 `(eval-now
-                    (defparameter ,name ,value
+                  (:constant
+                   `(define-constant ,name ,value
+                      ,@(when test-supplied-p `(:test ,test))
+                      ,@(when doc-supplied-p `(:documentation ,doc))))
+
+                  (:global
+                   `(sb-ext:defglobal ,name ,value
                       ,@(when doc-supplied-p `(,doc)))))
 
-                (:constant
-                 `(define-constant ,name ,value
-                    ,@(when test-supplied-p `(:test ,test))
-                    ,@(when doc-supplied-p `(:documentation ,doc))))
-
-                (:global
-                 `(sb-ext:defglobal ,name ,value
-                    ,@(when doc-supplied-p `(,doc)))))
-
-       ,@(when (and always-boundp (eq kind (or :var :parameter)))
-               `((eval-now (proclaim '(sb-ext:always-bound ,name))))))))
+         ,@(when (and always-boundp (eq kind (or :var :parameter)))
+                 `((eval-now (proclaim '(sb-ext:always-bound ,name)))))))))
 (export 'define-variable)
 
 
