@@ -14,6 +14,7 @@
 
 (declaim (inline mk-ptr))
 (defun mk-ptr (&optional value)
+  "..or the #& reader macro if you're even lazier."
   (mk-pointer value))
 (export 'mk-ptr)
 
@@ -31,8 +32,6 @@
   (setf (ptr-value pointer) new-value))
 
 
-;; TODO: Maybe this doesn't make much sense; I got to take a look at DEFSETF and
-;; DEFINE-SETF-EXPANDER.
 (defmacro place-fn (place-form)
   "This creates a closure which can write to and read from the \"place\"
 designated by PLACE-FORM."

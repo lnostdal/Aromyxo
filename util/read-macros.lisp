@@ -8,14 +8,16 @@
     (make-dispatch-macro-character #\λ)))
 
 
+(set-dispatch-macro-character #\λ #\a
+                              (lambda (stream char arg)
+                                (declare (ignore char arg))
+                                `(mk-atom ,(read stream))))
+
+
 (set-macro-character #\~
                      (lambda (stream char)
                        (declare (ignore char))
-                       (let ((form (read stream)))
-                         (if (and (listp form) (listp (first form)))
-                             ;; TODO: I don't seem to be using this syntax anywhere after all.
-                             `(funcall ,(first form) ,@(rest form))
-                             `(deref ,form))))
+                       `(deref ,(read stream)))
                      t)
 
 
@@ -40,6 +42,7 @@
                      t)
 
 
+;; Used by slots in defclass forms of classes with SELF-REF as superclass.
 (set-macro-character #\↑
                      (lambda (stream char)
                        (declare (ignore char))
@@ -55,6 +58,16 @@
                      t)
 
 
+(set-dispatch-macro-character #\# #\,
+                              (lambda (stream char arg)
+                                (declare (ignore char arg))
+                                `(fdefinition ',(read stream))))
+
+
+(set-dispatch-macro-character #\# #\&
+                              (lambda (stream char arg)
+                                (declare (ignore char arg))
+                                `(mk-pointer ,(read stream))))
 
 
 ;; Python-style multi-line strings (from http://homepages.nyu.edu/~ys453/ ).
