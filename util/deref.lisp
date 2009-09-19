@@ -37,6 +37,10 @@
   (funcall fn new-value))
 
 
+(defmethod deref ((obj t))
+  obj)
+
+
 (defmethod deref ((list list))
   (mapcar #'funcall list))
 
