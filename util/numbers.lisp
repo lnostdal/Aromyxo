@@ -33,3 +33,22 @@
         (values (truncate result))
         result)))
 (export 'urandom)
+
+
+(declaim (inline range))
+(defun range (from &optional to (by 1))
+  (loop :for i :from (if to from 0) :to (if to to from) :by by
+     :collect i))
+(export 'range)
+
+
+(declaim (inline product))
+(defun product (l)
+  (apply #'* l))
+(export 'product)
+
+
+(declaim (inline sum))
+(defun sum (l)
+  (apply #'+ l))
+(export 'sum)
