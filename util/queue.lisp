@@ -4,6 +4,9 @@
 
 (declaim (optimize speed))
 
+
+;; TODO: Consider switching to SB-QUEUE, but for now a QUEUE-PEEK function is missing there.
+
 (export '(queue
           queue-head queue-head-lock
           queue-tail queue-tail-lock
@@ -27,7 +30,7 @@
 
 (defmethod print-object ((queue queue) stream)
   (print-unreadable-object (queue stream :identity t :type t)
-    (muffle-compiler-note 
+    (muffle-compiler-note
      (format stream ":HEAD ~S :TAIL ~S" (queue-head queue) (queue-tail queue)))))
 
 
@@ -127,7 +130,7 @@ that one might get an isolated view of what items QUEUE contain."
 (export 'queue)
 
 (defconstant +queue-head+ '%queue-head)
-  
+
 
 ;; TODO: DEFINE-COMPILER-MACRO or check if SBCL is smart enough to determine when
 ;; INITIAL-ELEMENTS is constant and thus always NIL.
@@ -148,7 +151,7 @@ that one might get an isolated view of what items QUEUE contain."
   (declare (optimize (speed 3) (space 0) (safety 0) (compilation-speed 0))
            (queue queue))
   (let ((new-elt (cons element nil)))
-    (setf (cddr queue) new-elt 
+    (setf (cddr queue) new-elt
           (cdr queue) new-elt)
     (values)))
 (export 'queue-add)
