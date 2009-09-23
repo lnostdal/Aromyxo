@@ -14,6 +14,15 @@
                                 `(mk-atom ,(read stream))))
 
 
+(set-dispatch-macro-character #\λ #\Space
+                              (lambda (stream char arg)
+                                (declare (ignore char arg))
+                                (assert (char= #\( (read-char stream)) nil
+                                        "Correct syntax is (λ () 42), not (λ 42).")
+                                (unread-char #\( stream)
+                                'lambda))
+
+
 (set-macro-character #\~
                      (lambda (stream char)
                        (declare (ignore char))
