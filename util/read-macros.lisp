@@ -8,6 +8,12 @@
     (make-dispatch-macro-character #\λ)))
 
 
+(set-dispatch-macro-character #\λ #\λ
+                              (lambda (stream char arg)
+                                (declare (ignore char arg))
+                                `(lambda () ,(read stream))))
+
+
 (set-dispatch-macro-character #\λ #\a
                               (lambda (stream char arg)
                                 (declare (ignore char arg))
