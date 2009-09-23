@@ -35,7 +35,6 @@
 
 
 (defmacro catstr (&body args)
-  ;; aks44; i stealed it .. lol
   `(concatenate 'string ,@args))
 (export 'catstr)
 
