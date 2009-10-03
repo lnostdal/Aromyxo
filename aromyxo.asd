@@ -6,7 +6,8 @@
   :license "AGPLv3 + GPL linking exception."
   :author "Lars Rune Nøstdal <larsnostdal@gmail.com> http://nostdal.ath.cx/"
 
-  :depends-on (:closer-mop
+  :depends-on (;;:named-readtables
+               :closer-mop
                :sb-cltl2
                :cl-utilities :alexandria
                :md5
@@ -20,13 +21,14 @@
             :serial t
             :components
             ((:file "util") ;; TODO: This also contains some code. Should probably move stuff around.
+             (:file "read-macros")
              (:file "types")
              (:file "define-variable")
              (:file "lex-env")
              (:file "printing")
              (:file "deref") ;; TODO: This actually contains the code for the WITH-OBJECT macro.
              (:file "parse-number")
-             (:file "read-macros")
+
              (:file "add-to")
              (:file "metadata")
              (:file "symbols")
