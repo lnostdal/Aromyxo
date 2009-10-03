@@ -10,7 +10,7 @@ Stuff that is not lexical variables
 
 
   -hello-
-    Global variables (AMX:DEFINE-GLOBAL).
+    Global variables.
 
 
   =hello=
@@ -24,6 +24,8 @@ Stuff that is not lexical variables
 
 Other unusual looking stuff
 ===========================
+
+TODO: Move SW-MVC specific stuff to SW-MVC (README?).
 
 Some of these are defined in SW-MVC and SW-STM.
 
@@ -68,3 +70,12 @@ Some of these are defined in SW-MVC and SW-STM.
   ↑
     This is short for (WITH-OBJECT (SELF) ..) and is commonly used inside
     DEFCLASS forms.
+
+
+
+Strings and quoting
+===================
+
+The default quoting character when dealing with strings should be " or
+QUOTATION_MARK. This is particularly important when generating JS code which
+might have parts that we'd like to be evaluated client-side.
