@@ -8,21 +8,21 @@
 (defparameter *object-locks*
   (make-hash-table :test #'eq
                    ;; Mutual exclusion of concurrent SB-EXT:WITH-LOCKED-HASH-TABLE bodies.
-                   :synchronized nil 
+                   :synchronized nil
                    :weakness :key))
 (export '*object-locks*)
 
 
-(defmacro with-rlocked-object (locked-object &body body)
+(defmacro with-locked-object (locked-object &body body)
   `(with-recursive-lock-held ((lock-of ,locked-object))
      ,@body))
-(export 'with-rlocked-object)
-
-
-(defmacro with-locked-object (locked-object &body body)
-  `(with-lock-held ((lock-of ,locked-object))
-     ,@body))
 (export 'with-locked-object)
+
+
+#|(defmacro with-locked-object (locked-object &body body)
+  `(with-lock-held ((lock-of ,locked-object))
+     ,@body))|#
+#|(export 'with-locked-object)|#
 
 
 (defclass locked-object ()
