@@ -5,18 +5,11 @@
 (declaim (optimize speed))
 
 
-(defstruct (pointer (:constructor mk-pointer (&optional value))
+(defstruct (pointer (:constructor mk-ptr (&optional value))
                     (:conc-name :ptr-)
                     (:copier nil))
   (value))
-(export '(pointer mk-pointer ptr-value))
-
-
-(declaim (inline mk-ptr))
-(defun mk-ptr (&optional value)
-  "..or the #& reader macro if you're even lazier."
-  (mk-pointer value))
-(export 'mk-ptr)
+(export '(pointer mk-ptr ptr-value))
 
 
 (defmethod deref-expand ((arg symbol) (type (eql 'pointer)))

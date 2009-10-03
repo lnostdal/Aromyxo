@@ -2,6 +2,9 @@
 
 (in-package #:aromyxo)
 
+
+
+
 ;; Used by both SW-STM and SW-MVC.
 (eval-now
   (ignore-errors ;; In case we recompile.
@@ -82,7 +85,7 @@
 (set-dispatch-macro-character #\# #\&
                               (lambda (stream char arg)
                                 (declare (ignore char arg))
-                                `(mk-pointer ,(read stream))))
+                                `(mk-ptr ,(read stream))))
 
 
 ;; Python-style multi-line strings (from http://homepages.nyu.edu/~ys453/ ).
