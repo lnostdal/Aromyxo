@@ -29,7 +29,7 @@ TODO: Add support for type declarations for stuff like this:
 
     ;; Check for "old" CL style type declarations and optimization.
     (multiple-value-bind (body declarations doc)
-        (parse-body body)
+        (parse-body body :documentation t)
       (dolist (declaration declarations)
         (if (eq 'optimize (caadr declaration))
             (setf (car (member declaration declarations)) (cadr declaration))
@@ -51,20 +51,20 @@ TODO: Add support for type declarations for stuff like this:
                        &optional)
               declarations))
 
-
       `(progn
          ;; Compile-time type checking. CL is wonderful! :)
          ,(when (or arg-types rtype)
            `(eval-now
               (proclaim '(ftype (function (,@arg-types) ,@(when rtype `(,(first declarations))))
                           ,name))))
-         (defun ,name ,arg-names
-           ,@(when doc doc)
-           ;; Run-time type checking, and/or generation of optimized/specialized code.
-           ,@(when declarations `((declare ,@(remove-if (lambda (decl)
-                                                          (equal '(values &optional) decl))
-                                                        declarations))))
-           ,@body)))))
+           (defun ,name ,arg-names
+             ,@(when doc (list doc))
+
+             ;; Run-time type checking, and/or generation of optimized/specialized code.
+             ,@(when declarations `((declare ,@(remove-if (lambda (decl)
+                                                            (equal '(values &optional) decl))
+                                                          declarations))))
+             ,@body)))))
 (export 'defn)
 
 
