@@ -172,8 +172,8 @@
 
 
 (defmacro always-continue (&body body)
-  "On an ERROR condition, always look for a
-CONTINUE restart and dispatch to it if found."
+  "On an ERROR condition, always look for a CONTINUE restart and dispatch to it if
+found. You probably do not want to use this in normal code.."
   (with-gensyms (c)
     `(handler-bind ((error (lambda (,c)
                              (if (find-restart 'continue)
