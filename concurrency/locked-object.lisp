@@ -5,12 +5,10 @@
 (declaim (optimize speed))
 
 
-(defparameter *object-locks*
-  (make-hash-table :test #'eq
-                   ;; Mutual exclusion of concurrent SB-EXT:WITH-LOCKED-HASH-TABLE bodies.
-                   :synchronized nil
-                   :weakness :key))
-(export '*object-locks*)
+(define-variable -object-locks-
+    :value (make-hash-table :test #'eq
+                            :synchronized nil
+                            :weakness :key))
 
 
 (defmacro with-locked-object (locked-object &body body)
@@ -18,11 +16,6 @@
      ,@body))
 (export 'with-locked-object)
 
-
-#|(defmacro with-locked-object (locked-object &body body)
-  `(with-lock-held ((lock-of ,locked-object))
-     ,@body))|#
-#|(export 'with-locked-object)|#
 
 
 (defclass locked-object ()
@@ -36,15 +29,14 @@
 
 
 (defmethod lock-of (object)
-  (declare (optimize speed))
-  (multiple-value-bind (lock found-p) (gethash object *object-locks*)
+  (multiple-value-bind (lock found-p) (gethash object -object-locks-)
     (if found-p
         (values lock :found)
-        (sb-ext:with-locked-hash-table (*object-locks*)
-          (multiple-value-bind (lock found-p) (gethash object *object-locks*)
+        (sb-ext:with-locked-hash-table (-object-locks-)
+          (multiple-value-bind (lock found-p) (gethash object -object-locks-)
             (if found-p
                 (values lock :found)
-                (values (setf (gethash object *object-locks*)
+                (values (setf (gethash object -object-locks-)
                               (make-lock (princ-to-string object)))
                         :created)))))))
 (export 'lock-of)
