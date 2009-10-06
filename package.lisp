@@ -7,7 +7,7 @@
   (:import-from #:sb-ext #:truly-the)
   (:use
    #:cl
-   ;;#:named-readtables
+   #:named-readtables
    #:closer-mop
    #:cl-utilities #:alexandria
    #:bordeaux-threads #:sb-thread)

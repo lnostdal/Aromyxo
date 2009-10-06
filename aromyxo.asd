@@ -6,7 +6,7 @@
   :license "AGPLv3 + GPL linking exception."
   :author "Lars Rune Nøstdal <larsnostdal@gmail.com> http://nostdal.ath.cx/"
 
-  :depends-on (;;:named-readtables
+  :depends-on (:named-readtables
                :closer-mop
                :sb-cltl2
                :cl-utilities :alexandria
@@ -60,6 +60,7 @@
              (:file "pointer")
              #|(:file "connection")|#
              (:file "defun")
+
              ))
 
 
