@@ -104,7 +104,17 @@ Inherit from the class SELF-REF to do things like:
                 `((let ((,slot-value-sym (slot-value ,instance ,slot-name-sym)))
                     ,@body))
                 body)))))))
-(export '(with-bound-slots-in slot-name))
+(export 'with-bound-slots-in)
+
+
+(defmacro with-unbound-slots-in ((instance slot-name-sym) &body body)
+  (with-gensyms (slot)
+    (once-only (instance)
+      `(with-slots-in ,instance ,slot
+         (let ((,slot-name-sym (closer-mop:slot-definition-name ,slot)))
+           (unless (slot-boundp ,instance ,slot-name-sym)
+             ,@body))))))
+(export 'with-unbound-slots-in)
 
 
 

@@ -51,7 +51,7 @@
              (:file "mapping")
              (:file "time")
              (:file "clos")
-             (:file "clos-mutex-slot-mixin")
+             #|(:file "clos-mutex-slot-mixin")|#
              ;;(:file "clos-serialized-object-mixin")
              ;;(:file "url") ;; TODO: Maybe just delete this thing.
              (:file "object")
