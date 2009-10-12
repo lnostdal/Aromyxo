@@ -1,6 +1,6 @@
 ;;;; http://nostdal.org/ ;;;;
 
-(in-package #:aromyxo)
+(in-package aromyxo)
 
 
 (defreadtable aromyxo

@@ -1,7 +1,7 @@
 ;;;; http://nostdal.org/ ;;;;
 
-(in-package #:aromyxo)
-
+(in-package aromyxo)
+(in-readtable aromyxo)
 (declaim (optimize speed))
 
 
