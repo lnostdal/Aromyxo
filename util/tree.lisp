@@ -1,11 +1,17 @@
-;;;; http://nostdal.org/Aromyxo/ ;;;;
+;;;; http://nostdal.org/ ;;;;
 
-(in-package :AmUtil)
+(in-package aromyxo)
+(in-readtable aromyxo)
 
 
-(defun treeWalker (tree handler)
-  (funcall handler tree)
-  (when (listp tree)
-    (dolist (node tree)
-      (treeWalker node handler))))
-(export 'treeWalker)
+(defun map-tree (tree fn)
+  (declare (list tree)
+           (function fn)
+           (optimize speed))
+  (map nil (lambda (x)
+             (if (atom x)
+                 (funcall fn x)
+                 (map-tree x fn)))
+       tree)
+  (values))
+(export 'map-tree)

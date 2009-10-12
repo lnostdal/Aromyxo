@@ -60,7 +60,7 @@
              (:file "pointer")
              #|(:file "connection")|#
              (:file "defun")
-
+             (:file "tree")
              ))
 
 
