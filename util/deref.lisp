@@ -42,7 +42,7 @@
 
 
 (defmethod deref ((list list))
-  (mapcar #'funcall list))
+  (mapcar #'deref list))
 
 
 (defmethod (setf deref) (arg (list list))
