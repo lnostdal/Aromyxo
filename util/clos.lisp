@@ -1,6 +1,13 @@
 ;;;; http://nostdal.org/ ;;;;
 
-(in-package #:aromyxo)
+(in-package aromyxo)
+(in-readtable aromyxo)
+
+
+(defun really-slot-boundp (instance eslotd)
+  (not (eq (standard-instance-access instance (slot-definition-location eslotd))
+           sb-pcl::+slot-unbound+)))
+(export 'really-slot-boundp)
 
 
 (defmacro class-forward-reference (class-sym &body class-options)
