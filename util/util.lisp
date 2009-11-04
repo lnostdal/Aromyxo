@@ -52,11 +52,6 @@
 (export 'false)
 
 
-(defmacro self (what)
-  what)
-(export 'self)
-
-
 (defmacro mvbind (vars value-form &body body)
   `(multiple-value-bind ,vars ,value-form ,@body))
 (export 'mvbind)
