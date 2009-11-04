@@ -1,6 +1,7 @@
 ;;;; http://nostdal.org/ ;;;;
 
-(in-package #:aromyxo)
+(in-package aromyxo)
+(in-readtable aromyxo)
 
 
 (defmethod get-hash-key (value ht &key (test #'equal) ret-when-not-found)
@@ -20,4 +21,3 @@
     (maphash (lambda (k value) (declare (ignore k)) (collect value))
              hash-table)))
 (export 'list<-hash)
-

@@ -1,6 +1,6 @@
 ;;;; http://nostdal.org/ ;;;;
 
-(in-package #:aromyxo)
+(in-package aromyxo)
 
 
 ;; I think Slime/Swank should do this already, but ok.
@@ -95,7 +95,7 @@
 
 
 (defmacro swap (a b)
-  (let ((tmp (gensym)))
+  (with-gensyms (tmp)
     `(let ((,tmp ,a))
        (setf ,a ,b)
        (setf ,b ,tmp))))

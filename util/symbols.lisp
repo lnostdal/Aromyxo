@@ -1,6 +1,7 @@
 ;;;; http://nostdal.org/ ;;;;
 
-(in-package :aromyxo)
+(in-package aromyxo)
+(in-readtable aromyxo)
 
 
 (define-symbol-macro -> :->)
@@ -19,7 +20,7 @@
 (defun str<-symf (sym)
   (string-downcase (copy-seq (symbol-name sym))))
 (export 'str<-symf)
-  
+
 
 (defun sym<-str (str)
   "Use `',(str->sym \"blah\") to return a quoted symbol."

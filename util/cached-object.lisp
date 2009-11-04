@@ -1,8 +1,7 @@
 ;;;; http://nostdal.org/ ;;;;
 
-(in-package #:aromyxo)
-
-;; Look mom! -- No hands!
+(in-package aromyxo)
+(in-readtable aromyxo)
 
 
 (defun avoid-gc (seconds &rest objects)

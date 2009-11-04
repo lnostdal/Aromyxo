@@ -1,6 +1,7 @@
 ;;;; http://nostdal.org/
 
-(in-package #:aromyxo)
+(in-package aromyxo)
+(in-readtable aromyxo)
 
 
 (defun pad-number (number)
@@ -42,14 +43,14 @@
           (setf year "%")
           (unless (string= year "%")
             (setf year (parse-integer year)))))
-      
+
     (when (stringp month)
       (if (string= month "")
           (setf month "%")
           (unless (string= month "%")
             (handler-case (setf month (parse-norwegian-month month))
               (t () (setf month (parse-integer month)))))))
-      
+
     (when (stringp day)
       (if (string= day "")
           (setf day "%")

@@ -1,6 +1,7 @@
 ;;;; http://nostdal.org/ ;;;;
 
-(in-package #:aromyxo)
+(in-package aromyxo)
+(in-readtable aromyxo)
 
 
 (defun pos-of-nth (nth item sequence &key (test #'eql) (start 0) end key (from-end nil))

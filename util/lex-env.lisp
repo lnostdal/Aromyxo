@@ -1,7 +1,10 @@
 ;;;; http://nostdal.org/ ;;;;
 
-(in-package #:aromyxo)
+(in-package aromyxo)
+(in-readtable aromyxo)
 
+#| TODO: Most of this stuff doesn't actually work. Why it should be a "big thing" being able to extract type
+information from a compiler like this is puzzling. |#
 
 (eval-when (:compile-toplevel :load-toplevel)
   (defvar *lexenvs*

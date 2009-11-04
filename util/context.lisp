@@ -1,6 +1,7 @@
 ;;;; http://nostdal.org/ ;;;;
 
-(in-package #:aromyxo)
+(in-package aromyxo)
+(in-readtable aromyxo)
 
 
 (defmacro retryable (&body body)
@@ -9,7 +10,7 @@
        (tagbody
           ,retry-tag
           (restart-case
-              (return-from ,block-name (progn  ,@body))
+              (return-from ,block-name (progn ,@body))
             (retry ()
               :report (lambda (stream) (format stream "retry"))
               (go ,retry-tag)))))))

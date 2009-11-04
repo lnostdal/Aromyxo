@@ -1,6 +1,7 @@
 ;;;; http://nostdal.org/ ;;;;
 
-(in-package :amx)
+(in-package aromyxo)
+(in-readtable aromyxo)
 
 
 ;; A vector of octets that is not displaced, has no fill pointer and is not adjustable.

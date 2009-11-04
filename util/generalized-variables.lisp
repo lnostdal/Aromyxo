@@ -1,6 +1,7 @@
 ;; http://nostdal.org/ ;;;;
 
-(in-package #:aromyxo)
+(in-package aromyxo)
+(in-readtable aromyxo)
 
 
 (defmacro allf (val &rest places)

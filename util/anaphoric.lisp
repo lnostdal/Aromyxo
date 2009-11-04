@@ -1,12 +1,13 @@
 ;;;; http://nostdal.org/Aromyxo/ ;;;;
 
-(in-package #:aromyxo)
+(in-package aromyxo)
+(in-readtable aromyxo)
 
 ;; These are modified "anaphoric" macros.
 
 
 (defmacro aequal ((result-symbol &optional (test 'equal))
-                  orig possibly-new 
+                  orig possibly-new
                   &body then-else)
   "Anaphoric equal-thing?"
   `(let ((,result-symbol ,possibly-new))
@@ -154,5 +155,5 @@ evaluated - else `else-form' is evaluated."
               :collect `(collect (let ((prev ,oprev))
                                    (declare (ignorable prev))
                                    (setf ,oprev ,item))))))))
-      
+
 (export '(alist prev))
