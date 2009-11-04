@@ -12,17 +12,9 @@
 (export '(pointer mk-ptr ptr-value))
 
 
-(defmethod deref-expand ((arg symbol) (type (eql 'pointer)))
-  `(ptr-value ,arg))
-
-
-(defmethod deref ((pointer pointer))
-  (ptr-value pointer))
-(export 'deref)
-
-
-(defmethod (setf deref) (new-value (pointer pointer))
-  (setf (ptr-value pointer) new-value))
+(add-deref-type 'pointer
+                :get-expansion (λ (arg-sym) `(ptr-value ,arg-sym))
+                :set-expansion t)
 
 
 (defmacro place-fn (place-form)

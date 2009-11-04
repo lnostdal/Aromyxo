@@ -1,6 +1,7 @@
 ;;;; http://nostdal.org/ ;;;;
 
-(in-package #:aromyxo)
+(in-package aromyxo)
+(in-readtable aromyxo)
 
 
 (defmacro with-object (object &body body)
@@ -10,62 +11,59 @@
 (export 'with-object)
 
 
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (defmethod deref-expand ((arg symbol) type)
-    nil))
+#| The following weird'ish code is here because methods in SBCL won't currently dispatch at compile-time, but plain
+TYPECASE can. ADD-DEREF-TYPE is used to "add new methods" vs. DEREF. |#
 
 
-;; TODO: Finish this.
-(define-compiler-macro deref (&whole form arg &environment env)
-  (if (atom arg)
-      (let ((type (lex-var-info arg env)))
-        (if-let (body (deref-expand arg type))
-          body
-          form))
-      form))
+(define-variable -deref-typecase*-
+    :value (list))
 
 
-(defmethod deref-expand ((arg symbol) (type (eql 'function)))
-  `(funcall ,arg))
+(defun add-deref-type (type-symbol &key
+                       get-expansion set-expansion
+                       (replace-existing-p t))
+  "If SET-EXPANSION is EQ to T, a simple, default expansion based on GET-EXPANSION will be created."
+  (when replace-existing-p
+    (deletef -deref-typecase*- type-symbol
+             :key #'first :test #'eq))
+  (pushnew `(,type-symbol (,(funcall get-expansion '%arg)
+                           ,(with set-expansion
+                              (if (eq it t)
+                                  `(setf ,(funcall get-expansion '%arg) %new-value)
+                                  (when (functionp it)
+                                    (funcall it '%arg '%new-value))))))
+           -deref-typecase*-
+           :key #'first :test #'eq)
+  (eval
+   `(progn
+      #|(declaim (inline deref))|# ;; TODO: SBCL is currently too stupid to actually do this; *gah..*.
+      (defun deref (%arg)
+        (declare (optimize speed (safety 0)))
+        (etypecase %arg
+          ,@(mapcar (λ (tc) `(,(first tc) ,(caadr tc)))
+                    -deref-typecase*-)))
+
+      #|(declaim (inline (setf deref)))|# ;; TODO: SBCL is currently too stupid to actually do this; *gah..*.
+      (defun (setf deref) (%new-value %arg)
+        (declare (optimize speed (safety 0)))
+        (etypecase %arg
+          ,@(mapcar (lambda (cs)
+                      `(,(first cs) ,(with (cadadr cs)
+                                       (if (eq it t)
+                                           `(setf ,(caadr cs) %new-value)
+                                           it))))
+                    (remove-if (λ (tc) (eq nil (cadadr tc)))
+                               -deref-typecase*-)))))))
+(export 'add-deref-type)
 
 
-(defmethod deref ((fn function))
-  (funcall fn))
+(add-deref-type 'function
+                :get-expansion (λ (arg-sym) `(funcall ,arg-sym))
+                :set-expansion (λ (arg-sym new-value-sym) `(funcall ,arg-sym ,new-value-sym)))
 
 
-(defmethod (setf deref) (new-value (fn function))
-  (funcall fn new-value))
-
-
-(defmethod deref ((obj t))
-  obj)
-
-
-(defmethod deref ((list list))
-  (mapcar #'deref list))
-
-
-(defmethod (setf deref) (arg (list list))
-  (mapcar (lambda (fn) (funcall fn arg))
-          list))
-
-
-(defun full-deref (object)
-  (let ((value (deref object)))
-    (loop :while (find-method #'deref nil (list (class-of value)) nil)
-       :do (setf value (deref value)))
-    value))
-
-
-;; TODO: Finish this and add expanders to the appropriate places.
-#|
-(define-compiler-macro (setf deref) (&whole form arg arg2 &environment env)
-  (dbg-princ form)
-  (dbg-princ arg)
-  (dbg-princ arg2)
-  (let ((type (cdr (assoc 'type (third (multiple-value-list (sb-cltl2:variable-information
-                                                             arg2
-                                                             env)))))))
-    (dbg-princ type))
-  form)
-|#
+#|(add-deref-type 'list
+                :get-expansion (λ (arg-sym) `(mapcar (lambda (elt)
+                                                       (declare (notinline deref))
+                                                       (deref elt))
+                                                     ,arg-sym)))|#

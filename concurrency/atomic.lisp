@@ -11,13 +11,9 @@
 (export '(atomt mk-atom atomt-p atomt-value))
 
 
-(defmethod deref-expand ((arg symbol) (type (eql 'atomt)))
-  `(atomt-value ,arg))
-
-
-(defmethod deref ((atomt atomt))
-  (atomt-value atomt))
-(export 'deref)
+(add-deref-type 'atomt
+                :get-expansion (λ (arg-sym) `(atomt-value ,arg-sym))
+                :set-expansion t)
 
 
 (defmacro %swap (place new)

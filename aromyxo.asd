@@ -26,10 +26,12 @@
              (:file "define-variable")
              (:file "lex-env")
              (:file "printing")
+             (:file "conditional-evaluation")
+             (:file "context")
              (:file "deref") ;; TODO: This actually contains the code for the WITH-OBJECT macro.
              (:file "parse-number")
 
-             (:file "add-to")
+             #|(:file "add-to")|#
              (:file "metadata")
              (:file "symbols")
              (:file "fflet")
@@ -39,9 +41,7 @@
              (:file "date")
              (:file "numbers")
              (:file "sequences")
-             (:file "context")
              (:file "function-builders")
-             (:file "conditional-evaluation")
              (:file "generalized-variables")
              (:file "iteration")
              (:file "lists")
@@ -75,7 +75,7 @@
              (:file "condition") ;; TODO: rename to waitqueue.lisp ..?
              (:file "locked-object")
              (:file "semaphores")
-             (:file "process")
+             #|(:file "process")|#
              (:file "atomic")
              ))
 
