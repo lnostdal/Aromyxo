@@ -186,3 +186,15 @@ found. You probably do not want to use this in normal code.."
     (dotimes (i (- of-possible num))
       (princ #\☆ ss))))
 (export 'stars)
+
+
+(defmacro read-with-lazy-init (check read init lock)
+    "* Lock-free READ.
+* Lazy but safe and non-racy (LOCK) initialization via INIT."
+  `(if ,check
+       ,read
+       (with-lock-held (,lock)
+         (if ,check
+             ,read
+             ,init))))
+(export 'read-with-lazy-init)
