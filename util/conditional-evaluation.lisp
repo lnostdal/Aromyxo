@@ -1,6 +1,7 @@
 ;;;; http://nostdal.org/ ;;;
 
-(in-package #:aromyxo)
+(in-package aromyxo)
+(in-readtable aromyxo)
 
 
 (defmacro nth-expr (n &body expressions)
@@ -68,7 +69,7 @@ evaluates to."
 
 
 
-(defmacro in ((obj &key (test 'equal) key) &rest choices)
+(defmacro in ((obj &key (test 'eq) key) &rest choices)
   "Does calling `:test' with `obj' and any of `choices' as arguments return T?
 :key defines how to access `choices'."
   (with-gensyms (insym)
