@@ -13,6 +13,25 @@
 (export 'truly-the)
 
 
+(defun %define-package-mk (name &optional nicknames)
+  (unless (find-package name)
+    (make-package name :use (list) :nicknames nicknames)))
+
+
+(defmacro define-package (name &key use nicknames)
+  `(progn
+     (eval-when (:compile-toplevel :load-toplevel :execute)
+       (%define-package-mk ,name ,nicknames)
+       ;; Handle Common Lisp pitfall; (import 'nil) or (export 'nil) will not work!
+       (shadowing-import '(cl:nil) (find-package ,name)))
+
+     ,@(loop :for pkg :in use
+          :collect `(eval-when (:compile-toplevel :load-toplevel :execute)
+                      (do-external-symbols (sym (find-package ,pkg))
+                        (shadowing-import sym (find-package ,name)))))))
+(export 'define-package)
+
+
 (defun generate-id-string (&optional (length 30))
   (map-into (make-sequence 'string length)
             (lambda ()

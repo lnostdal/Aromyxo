@@ -1,6 +1,6 @@
 ;;;; http://nostdal.org/ ;;;;
 
-(in-package cl)
+;; We don't have the AMX:DEFINE-PACKAGE construct yet so we bootstrap "manually" here.
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (unless (find-package :aromyxo)
