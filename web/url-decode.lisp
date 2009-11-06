@@ -1,6 +1,7 @@
 ;;;; http://nostdal.org/ ;;;;
 
-(in-package #:aromyxo)
+(in-package aromyxo)
+(in-readtable aromyxo)
 
 
 ;; NOTE: From Hunchentoot originally.
@@ -32,3 +33,4 @@
                                              (otherwise char)))
                                 vector))
       (sb-ext:octets-to-string vector))))
+(export 'url-decode)

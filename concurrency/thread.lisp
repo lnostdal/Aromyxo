@@ -1,11 +1,7 @@
 ;;;; http://nostdal.org/ ;;;;
 
-(in-package #:aromyxo)
-
-
-(define-symbol-macro *current-thread*
-    #+sbcl sb-thread:*current-thread*)
-(export '*current-thread*)
+(in-package aromyxo)
+(in-readtable aromyxo)
 
 
 ;; TODO: Bordeaux-Threads suddenly creates a new (non-random ....) *random-state*
@@ -31,7 +27,7 @@
 
 
 (defmacro with-sthread (&body body)
-  "Define and start a thread as simple as possible."
+  "Create and start a \"simple thread\"."
   `(sb-thread:make-thread (lambda () ,@body)))
 (export 'with-sthread)
 

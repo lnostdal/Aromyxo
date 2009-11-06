@@ -3,10 +3,14 @@
 (in-package aromyxo)
 
 
-;; I think Slime/Swank should do this already, but ok.
+;; IMHO Slime/Swank should do this already, but ok. TODO: This doesn't really belong here ..
 (eval-when (:execute :load-toplevel :compile-toplevel)
   (when (find-package :swank)
     (pushnew :swank *features*)))
+
+
+(shadowing-import 'sb-ext:truly-the)
+(export 'truly-the)
 
 
 (defun generate-id-string (&optional (length 30))

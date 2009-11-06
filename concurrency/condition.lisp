@@ -1,37 +1,38 @@
 ;;;; http://nostdal.org/ ;;;;
 
-(in-package #:aromyxo)
-
-
+(in-package aromyxo)
+(in-readtable aromyxo)
 (declaim (optimize speed))
 
+;; We unintern here so that we don't re-define stuff from bordeaux-threads.
 
-(defvar *object->waitqueue*
-  (make-hash-table :test #'eq
-                   ;; Mutual exclusion of concurrent SB-EXT:WITH-LOCKED-HASH-TABLE bodies.
-                   :synchronized nil
-                   :weakness :key))
-(export '*object->waitqueue*)
+
+(define-variable -object->waitqueue-
+    :value (make-hash-table :test #'eq
+                            ;; Mutual exclusion of concurrent SB-EXT:WITH-LOCKED-HASH-TABLE bodies.
+                            :synchronized nil
+                            :weakness :key))
 
 
 (defun waitqueue-of (object &key name)
   "OBJECT is the thing which holds or \"represents\" the queue.
 This will return a unique designated waitqueue for OBJECT."
-  (multiple-value-bind (condition found-p) (gethash object *object->waitqueue*)
+  (multiple-value-bind (condition found-p) (gethash object -object->waitqueue-)
     (if found-p
         (values condition
                 :found)
-        (sb-ext:with-locked-hash-table (*object->waitqueue*)
-          (multiple-value-bind (condition found-p) (gethash object *object->waitqueue*)
+        (sb-ext:with-locked-hash-table (-object->waitqueue-)
+          (multiple-value-bind (condition found-p) (gethash object -object->waitqueue-)
             (if found-p
                 (values condition
                         :found)
-                (values (setf (gethash object *object->waitqueue*)
+                (values (setf (gethash object -object->waitqueue-)
                               (make-waitqueue :name name))
                         :created)))))))
 (export 'waitqueue-of)
 
 
+(eval-now (unintern 'condition-wait))
 (defun condition-wait (object lock)
   "OBJECT is the thing which holds or \"represents\" the queue.
 LOCK must be held when calling this.
@@ -44,6 +45,7 @@ OBJECT."
 (export 'condition-wait)
 
 
+(eval-now (unintern 'condition-notify))
 (defun condition-notify (object &key (number 1))
   (declare (fixnum number))
   "OBJECT is the thing which holds or \"represents\" the queue.
@@ -55,6 +57,7 @@ notify or attempt to wake up."
 (export 'condition-notify)
 
 
+(eval-now (unintern 'condition-broadcast)) ;; This one is not from BT, but from SB-THREAD so it has a lock.
 (defun condition-broadcast (object)
   "OBJECT is the thing which holds or \"represents\" the queue.
 The lock held when calling CONDITION-WAIT must be held when this is called."

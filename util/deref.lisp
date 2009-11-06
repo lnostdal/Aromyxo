@@ -54,7 +54,7 @@ TYPECASE can. ADD-DEREF-TYPE is used to "add new methods" vs. DEREF. |#
                                            it))))
                     (remove-if (λ (tc) (eq nil (cadadr tc)))
                                -deref-typecase*-)))))))
-(export 'add-deref-type)
+(export '(deref add-deref-type))
 
 
 (add-deref-type 'function
