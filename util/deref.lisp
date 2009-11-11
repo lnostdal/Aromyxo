@@ -62,8 +62,8 @@ TYPECASE can. ADD-DEREF-TYPE is used to "add new methods" vs. DEREF. |#
                 :set-expansion (λ (arg-sym new-value-sym) `(funcall ,arg-sym ,new-value-sym)))
 
 
-#|(add-deref-type 'list
+(add-deref-type 'list
                 :get-expansion (λ (arg-sym) `(mapcar (lambda (elt)
                                                        (declare (notinline deref))
                                                        (deref elt))
-                                                     ,arg-sym)))|#
+                                                     ,arg-sym)))
