@@ -79,3 +79,30 @@ T if there are more elements in the queue."
         (unless ,more-elements-check
           (sb-thread:condition-wait (waitqueue-of ,object) ,lock)))))
 (export 'with-waitqueue)
+
+
+
+#|
+;;; By using SB-QUEUE we don't have to lock as much:
+
+(defclass worker (locked-object)
+  ((queue :reader queue-of
+          :initform (sb-queue:make-queue))))
+
+(define-variable -worker- :value (make-instance 'worker))
+
+
+(with-sthread
+  (with-waitqueue (-worker-
+                   (not (sb-queue:queue-empty-p (queue-of -worker-))))
+    (block done
+      (multiple-value-bind (value found-p)
+          (sb-queue:dequeue (queue-of -worker-))
+        (if found-p
+            (dbg-prin1 value)
+            (return-from done))))))
+
+
+(sb-queue:enqueue 42 (queue-of -worker-))
+(with-locked-object -worker- (condition-notify -worker-))
+|#
