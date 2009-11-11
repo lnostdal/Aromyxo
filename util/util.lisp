@@ -216,8 +216,18 @@ found. You probably do not want to use this in normal code.."
 * Lazy but safe and non-racy (LOCK) initialization via INIT."
   `(if ,check
        ,read
-       (with-lock-held (,lock)
+       (with-recursive-lock-held (,lock)
          (if ,check
              ,read
              ,init))))
 (export 'read-with-lazy-init)
+
+
+(defmacro lazy-init (check init lock)
+  `(with ,check
+     (if it it
+         (with-recursive-lock-held (,lock)
+           (with ,check
+             (if it it
+                 ,init))))))
+(export 'lazy-init)
