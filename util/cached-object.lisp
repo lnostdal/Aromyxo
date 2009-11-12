@@ -13,6 +13,7 @@
 
 
 (mk-meta-slot object-cache-of) ;; from object.lisp
+(export 'object-cache-of)
 
 
 (defun cache-object (object &key (avoid-gc nil avoid-gc-supplied-p))
@@ -42,8 +43,7 @@ CLASS can be a symbol or a CLASS type."
   (when (symbolp class)
     (setf class (find-class class)))
   (multiple-value-bind (object-cache found-p)
-      (with-recursive-lock-held ((lock-of class))
-        (object-cache-of class))
+      (object-cache-of class)
     (if found-p
         (multiple-value-bind (obj found-p)
             (gethash id object-cache)
