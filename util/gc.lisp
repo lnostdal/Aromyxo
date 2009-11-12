@@ -1,10 +1,11 @@
 ;;;; http://nostdal.org/ ;;;;
 
-(in-package #:aromyxo)
+(in-package aromyxo)
+(in-readtable aromyxo)
 
 
 (define-variable -delay-gc-
-    :value (make-hash-table :test #'eq :weakness :value)
+    :value (make-hash-table :test #'eq :weakness :value :synchronized t)
     :type hash-table
     :doc "OBJECT -> PARENT")
 

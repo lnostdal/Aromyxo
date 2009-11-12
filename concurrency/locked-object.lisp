@@ -7,7 +7,7 @@
 
 (define-variable -object-locks-
     :value (make-hash-table :test #'eq
-                            :synchronized nil
+                            :synchronized t
                             :weakness :key))
 
 

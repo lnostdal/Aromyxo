@@ -24,10 +24,9 @@ Returns ID and CLASS which can be passed to GET-OBJ later."
         (id (id-of object)))
     (let ((object-cache (lazy-init (object-cache-of class)
                                    (setf (object-cache-of class)
-                                         (make-hash-table :test #'equal :weakness :value :synchronized nil))
+                                         (make-hash-table :test #'equal :weakness :value :synchronized t))
                                    (lock-of class))))
-      (sb-ext:with-locked-hash-table (object-cache)
-        (setf (gethash id object-cache) object))
+      (setf (gethash id object-cache) object)
       (when avoid-gc-supplied-p
         (avoid-gc avoid-gc object))
       (values id class))))
@@ -47,8 +46,7 @@ CLASS can be a symbol or a CLASS type."
         (object-cache-of class))
     (if found-p
         (multiple-value-bind (obj found-p)
-            (sb-ext:with-locked-hash-table (object-cache)
-              (gethash id object-cache))
+            (gethash id object-cache)
           (if found-p
               (values obj t t)
               (values nil nil t)))
@@ -63,8 +61,7 @@ found."
   (declare (optimize speed))
   (multiple-value-bind (object-cache found-p) (object-cache-of (class-of object))
     (if found-p
-        (sb-ext:with-locked-hash-table (object-cache)
-          (remhash (id-of object) object-cache))
+        (remhash (id-of object) object-cache)
         nil)))
 (export 'uncache-object)
 

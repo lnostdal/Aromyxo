@@ -8,7 +8,7 @@
 ;; [LISP-OBJ -> [KEY -> VALUE]]
 (define-variable +lisp-obj->metadata+
     :kind :global
-    :value (make-hash-table :test #'eq :weakness :key)
+    :value (make-hash-table :test #'eq :weakness :key :synchronized t)
     :type hash-table)
 
 

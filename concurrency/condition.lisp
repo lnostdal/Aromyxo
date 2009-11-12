@@ -9,8 +9,7 @@
 
 (define-variable -object->waitqueue-
     :value (make-hash-table :test #'eq
-                            ;; Mutual exclusion of concurrent SB-EXT:WITH-LOCKED-HASH-TABLE bodies.
-                            :synchronized nil
+                            :synchronized t
                             :weakness :key))
 
 

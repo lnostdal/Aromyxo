@@ -5,7 +5,7 @@
 
 
 (defmacro mk-meta-slot (accessor-name &key
-                        (test '#'eq) (weakness :key) synchronized (type t)
+                        (test '#'eq) (weakness :key) (synchronized t) (type t)
                         documentation
                         default)
   (with-gensyms (slot-data)
