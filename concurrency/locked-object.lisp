@@ -37,6 +37,6 @@
             (if found-p
                 (values lock :found)
                 (values (setf (gethash object -object-locks-)
-                              (make-lock (princ-to-string object)))
+                              (make-recursive-lock (princ-to-string object)))
                         :created)))))))
 (export 'lock-of)
