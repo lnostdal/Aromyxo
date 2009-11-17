@@ -120,8 +120,11 @@
 (export 'swap)
 
 
-(defmacro second-value (&body body)
-  `(second (multiple-value-list ,@body)))
+(defmacro second-value (value-form)
+  (with-gensyms (second)
+    `(multiple-value-bind (%not-used ,second) ,value-form
+       (declare (ignore %not-used))
+       ,second)))
 (export 'second-value)
 
 
@@ -209,6 +212,10 @@ found. You probably do not want to use this in normal code.."
     (dotimes (i (- of-possible num))
       (princ #\☆ ss))))
 (export 'stars)
+
+
+(defun does-not-approve () "ಠ_ಠ")
+(export 'does-not-approve)
 
 
 (defmacro read-with-lazy-init (check read init lock)

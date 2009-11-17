@@ -1,6 +1,7 @@
 ;;;; http://nostdal.org/ ;;;;
 
-(in-package #:aromyxo)
+(in-package aromyxo)
+(in-readtable aromyxo)
 
 #|
 TODO: Add support for type declarations for stuff like this:

@@ -1,6 +1,7 @@
 ;;;; http://nostdal.org/ ;;;;
 
-(in-package #:aromyxo)
+(in-package aromyxo)
+(in-readtable aromyxo)
 
 
 #| TODO:
@@ -20,8 +21,7 @@ automatically.
 
 
 
-(defvar *current-process* nil
-  "If you get a message about this being unbound ")
+(defvar *current-process* nil)
 
 
 (defvar *global-variables* (make-hash-table :test #'eq :weakness :key)
@@ -32,7 +32,6 @@ automatically.
 (defun mk-message-package (message from to)
   (declare (optimize speed))
   (list message from to))
-(export 'mk-message-package)
 
 
 (defmacro with-message-package ((package &key (message 'message) (source 'source) (target 'target))
@@ -40,25 +39,22 @@ automatically.
   `(destructuring-bind (,message ,source ,target) ,package
      (declare (ignorable ,message ,source ,target))
      ,@body))
-(export 'with-message-package)
 
 
 (defmacro with-process (process &body body)
   `(let ((*current-process* ,process))
      (check-type *current-process* process)
      ,@body))
-(export 'with-process)
 
 
 (defclass process ()
   ((thread :reader thread-of)
 
    (incoming-messages :initform (mk-queue))
-   (message-handler-ptr :initform (mk-pointer #'default-message-handler))
+   (message-handler-ptr :initform (mk-ptr #'default-message-handler))
 
    (variables :reader variables-of
               :initform (make-hash-table :test #'eq :weakness :key))))
-(export '(process thread-of))
 
 
 (defmethod variables-of ((process (eql nil)))
@@ -97,37 +93,31 @@ Calling this function will not block; it is async."
       (queue-add incoming-messages (mk-message-package message from to)))
     (condition-notify to))
   (values))
-(export 'send)
 
 
 (defmethod (setf message-handler-of) ((new-fn function) (process process))
   (setf (ptr-value (slot-value process 'message-handler-ptr))
         new-fn))
-(export 'message-handler-of)
 
 
 (defmethod message-handler-of ((process process))
   (ptr-value (slot-value process 'message-handler-ptr)))
-(export 'message-handler-of)
 
 
 (defun list-all-processes ()
   (loop :for thread :in (all-threads)
      :when (typep (thread-name thread) 'process)
      :collect (thread-name thread)))
-(export 'list-all-processes)
 
 
 (defun process-alive-p (process)
   (declare (process process))
   (thread-alive-p (thread-of process)))
-(export 'process-alive-p)
 
 
 (defmethod process-terminate (process)
   (declare (process process))
   (destroy-thread (thread-of process)))
-(export 'process-terminate)
 
 
 (defun default-message-handler (message-package)
@@ -172,7 +162,7 @@ Calling this function will not block; it is async."
                ,val)))
      ',var))
 
-    
+
 
 
 
@@ -187,19 +177,19 @@ Calling this function will not block; it is async."
                                                      (declare (ignore message))
                                                      ))))
     (with-process process-1
-      (time 
+      (time
        (dotimes (i-1 100000)
          ;; PROCESS-1 ---> PROCESS-2
          (send "blah" ;;(format nil "i-1: ~A" i-1)
                process-2))))))
-  
+
 
 
 
 (defun test-talk-circle ()
   (let (process-1 process-2 process-3)
     (setf process-1
-          (make-instance 'process 
+          (make-instance 'process
                          :message-handler
                          (lambda (message-package)
                            (with-message-package (message-package)
@@ -216,16 +206,14 @@ Calling this function will not block; it is async."
                              (send message process-3))))
           process-3
           (make-instance 'process
-                         :message-handler 
+                         :message-handler
                          (lambda (message-package)
                            (with-message-package (message-package)
                              (format t "process-3 got message ~S, forwarding it to process-1~%" message)
                              (sleep 1)
                              (send message process-1)))))
-    
+
     ;; "Bootstrap" by process-1 sending a message to process-2.
     (with-process process-1
       (send "hello!" process-2))))
 |#
-
-
