@@ -75,9 +75,13 @@ Inherit from the class SELF-REF to do things like:
   (first *self-refs*))
 (export 'self)
 
-#| When creating closures (SELF) will not work. Since the user might already be using the ↑ reader macro, we fall
+#| When creating closures (SELF) will not work, but since the user might already be using the ↑ reader macro, we fall
 back to the lexical binding which points to what (SELF) returned. |#
-(define-symbol-macro self (or (self) %with-object))
+(define-symbol-macro =self=
+    (if (lexically-bound-p %with-object)
+        %with-object
+        (self)))
+(export '=self=)
 
 
 (defmacro with-direct-slots-in (instance slot-value-sym &body body)
