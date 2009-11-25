@@ -180,11 +180,6 @@
 (export 'mk)
 
 
-(defmacro compile-and-execute (&body body)
-  `(funcall (compile nil `(lambda () ,,@body))))
-(export 'compile-and-execute)
-
-
 (defmacro with-continue-restart (&body body)
   `(restart-case
        (progn ,@body)
