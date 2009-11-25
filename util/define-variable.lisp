@@ -15,7 +15,8 @@
                            (doc nil doc-supplied-p)
                            (type nil type-supplied-p)
                            (always-boundp value-supplied-p)
-                           (test nil test-supplied-p))
+                           (test nil test-supplied-p)
+                           (retain-old-value-p t))
   ;; TODO: Slime indentation is horrible here.
   `(progn
      ,@(when type-supplied-p
@@ -37,9 +38,15 @@
                         ,@(when doc-supplied-p `(,doc)))))
 
                   (:constant
-                   `(define-constant ,name ,value
-                      ,@(when test-supplied-p `(:test ,test))
-                      ,@(when doc-supplied-p `(:documentation ,doc))))
+                   `(handler-bind ((simple-error (lambda (c)
+                                                   (declare (ignore c))
+                                                   ;; TODO: But, uh, how will we know this is the right condition?
+                                                   ;; Alexandria doesn't use custom conditions for this ...
+                                                   (when (and ,retain-old-value-p (find-restart 'ignore))
+                                                     (invoke-restart (find-restart 'ignore))))))
+                      (define-constant ,name ,value
+                        ,@(when test-supplied-p `(:test ,test))
+                        ,@(when doc-supplied-p `(:documentation ,doc)))))
 
                   (:global
                    `(sb-ext:defglobal ,name ,value
