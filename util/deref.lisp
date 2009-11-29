@@ -11,6 +11,11 @@
 (export 'with-object)
 
 
+(defgeneric mderef (arg))
+(defgeneric (setf mderef) (new-value arg))
+(export 'mderef)
+
+
 #| The following weird'ish code is here because methods in SBCL won't currently dispatch at compile-time, but plain
 TYPECASE can. ADD-DEREF-TYPE is used to "add new methods" vs. DEREF. |#
 
@@ -39,21 +44,24 @@ TYPECASE can. ADD-DEREF-TYPE is used to "add new methods" vs. DEREF. |#
       #|(declaim (inline deref))|# ;; TODO: SBCL is currently too stupid to actually do this; *gah..*.
       (defun deref (%arg)
         (declare (optimize speed (safety 0)))
-        (etypecase %arg
+        (typecase %arg
           ,@(mapcar (λ (tc) `(,(first tc) ,(caadr tc)))
-                    -deref-typecase*-)))
+                    -deref-typecase*-)
+          ;; Fall back to CLOS method dispatch.
+          (t (mderef %arg))))
 
       #|(declaim (inline (setf deref)))|# ;; TODO: SBCL is currently too stupid to actually do this; *gah..*.
       (defun (setf deref) (%new-value %arg)
         (declare (optimize speed (safety 0)))
-        (etypecase %arg
+        (typecase %arg
           ,@(mapcar (lambda (cs)
                       `(,(first cs) ,(with (cadadr cs)
                                        (if (eq it t)
                                            `(setf ,(caadr cs) %new-value)
                                            it))))
                     (remove-if (λ (tc) (eq nil (cadadr tc)))
-                               -deref-typecase*-)))))))
+                               -deref-typecase*-))
+          (t (setf (mderef %arg) %new-value)))))))
 (export '(deref add-deref-type))
 
 
