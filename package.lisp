@@ -1,6 +1,6 @@
 ;;;; http://nostdal.org/ ;;;;
 
-;; We don't have the AMX:DEFINE-PACKAGE construct yet so we bootstrap "manually" here.
+;; We don't have the AMX:DEFINE-PACKAGE construct yet (util/util.lisp), so we bootstrap "manually" here.
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (unless (find-package :aromyxo)
