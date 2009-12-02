@@ -8,7 +8,6 @@
 (defstruct (atomt (:constructor mk-atom (&optional value))
                   (:copier nil))
   (value))
-(export '(atomt mk-atom atomt-p atomt-value))
 
 
 (add-deref-type 'atomt
@@ -31,7 +30,6 @@
 NEW might be evaluated more than once."
   (once-only (atom)
     `(%swap (atomt-value ,atom) ,new)))
-(export 'swap-atom)
 
 
 (declaim (inline swap-atom-fn))
@@ -42,4 +40,3 @@ called more than once and the argument passed to it might change for each call."
     (declare (atomt atom)
              (function fn))
     (swap-atom atom (funcall fn %old)))
-(export 'swap-atom-fn)

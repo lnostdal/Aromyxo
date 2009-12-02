@@ -7,17 +7,6 @@
 
 ;; TODO: Consider switching to SB-QUEUE, but for now a QUEUE-PEEK function is missing there.
 
-(export '(queue
-          queue-head queue-head-lock
-          queue-tail queue-tail-lock
-          mk-queue
-          with-queue-items items
-          queue-peek
-          queue-pop
-          queue-push
-          queue-push*
-          queue-append))
-
 
 (defstruct (queue (:constructor %mk-queue)
                   (:conc-name :queue-)
@@ -127,7 +116,6 @@ that one might get an isolated view of what items QUEUE contain."
 
 
 (deftype queue () 'cons)
-(export 'queue)
 
 (defconstant +queue-head+ '%queue-head)
 
@@ -143,7 +131,6 @@ that one might get an isolated view of what items QUEUE contain."
         (cons head (last head)))
       (let ((head (cons +queue-head+ nil)))
         (cons head head))))
-(export 'mk-queue)
 
 
 (declaim (inline queue-add))
@@ -154,7 +141,6 @@ that one might get an isolated view of what items QUEUE contain."
     (setf (cddr queue) new-elt
           (cdr queue) new-elt)
     (values)))
-(export 'queue-add)
 
 
 (declaim (inline queue-extract-next))
@@ -165,7 +151,6 @@ that one might get an isolated view of what items QUEUE contain."
     (prog1 (pop (cdar queue))
       (unless (cdar queue)
         (setf (cdr queue) (car queue))))))
-(export 'queue-extract-next)
 
 
 (declaim (inline queue-view-next))
@@ -173,7 +158,6 @@ that one might get an isolated view of what items QUEUE contain."
   (declare (optimize (speed 3) (space 0) (safety 0) (compilation-speed 0))
            (queue queue))
   (cadar queue))
-(export 'queue-view-next)
 
 
 #|
@@ -190,7 +174,6 @@ that one might get an isolated view of what items QUEUE contain."
   (declare (optimize (speed 3) (space 0) (safety 0) (compilation-speed 0))
            (queue queue))
   (cdar queue))
-(export 'queue-as-list)
 
 
 ;; TODO: I don't have time to do this proper ... :/
@@ -205,6 +188,5 @@ that one might get an isolated view of what items QUEUE contain."
       (setf (cdar queue)
             (cdar other-queue))))
 |#
-(export 'queue-merge)
 
 |#

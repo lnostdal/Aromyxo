@@ -14,7 +14,6 @@
                                  `(funcall ,',tmp-func ,@args)))
                             bindings tmp-funcs))
          ,@body))))
-(export 'fflet)
 
 
 #|

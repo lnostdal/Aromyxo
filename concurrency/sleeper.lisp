@@ -7,19 +7,18 @@
   (;;(name nil)
    (really-signalled-p :accessor really-signalled-p-of
                        :initform nil)
-   
+
    (n-signalled :accessor n-signalled-of
                 :documentation "Number of threads signalled for 'wake up'."
                 :type integer
                 :initform 0)
-   
+
    (n-waiting :accessor n-waiting-for
               :documentation "Number of threads waiting for signal."
               :initform 0)
 
    (queue :accessor queue-of)
    (mutex :reader mutex-of)))
-(export '(sleeper n-waiting-for data-of))
 
 
 (defmethod initialize-instance :after ((sleeper sleeper) &key)
@@ -39,7 +38,7 @@
            ;; Already signalled?
            (when (really-signalled-p-of sleeper)
              (return-from go-to-sleep))
-    
+
            (loop
               (condition-wait (queue-of sleeper) (mutex-of sleeper))
               ;; Only return if really signalled.
@@ -47,7 +46,6 @@
                 (return-from go-to-sleep))))
       (setf (really-signalled-p-of sleeper) nil)
       (decf (n-waiting-for sleeper)))))
-(export 'go-to-sleep)
 
 
 (defmethod wake-up ((sleeper sleeper))
@@ -55,7 +53,6 @@
   (with-lock-held ((mutex-of sleeper))
     (setf (really-signalled-p-of sleeper) t)
     (condition-notify (queue-of sleeper))))
-(export 'wake-up)
 
 
 

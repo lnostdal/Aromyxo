@@ -10,14 +10,12 @@
     `(lambda (&rest ,rest)
        (declare (ignore ,rest))
        ,@body)))
-(export 'iambda)
 
 
 
 (defmacro as-function (&body body)
   "The value of `body' is returned as a function that reveals the value once called."
   `(lambda () ,@body))
-(export 'as-function)
 
 
 (defun always (x)
@@ -25,7 +23,6 @@
   (lambda (&rest args)
     (declare (ignore args))
     x))
-(export 'always)
 
 
 (defun build-call (op fns)
@@ -45,7 +42,6 @@
 
 (defmacro fn (expr)
   `#',(rbuild expr))
-(export 'fn)
 
 
 (defmacro rlambda (args &body body)
@@ -53,4 +49,3 @@
   `(labels ((recur ,args
               ,@body))
      #'recur))
-(export '(rlambda recur))

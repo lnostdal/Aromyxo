@@ -4,7 +4,7 @@
 
 
 (defvar *lambda-callbacks* nil
-  "TODO: Clean up later somehow?") (export '*lambda-callbacks*)
+  "TODO: Clean up later somehow?")
 
 
 ;; Suggest for inclusion in cffi?
@@ -15,4 +15,3 @@
          ,@body)
        (push ',name *lambda-callbacks*)
        (cffi:callback ,name))))
-(export 'cffi::lambda-callback 'cffi)

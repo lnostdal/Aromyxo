@@ -7,4 +7,3 @@
   (let ((seq (make-array num)))
     (read-sequence seq stream)
     (coerce seq 'string)))
-(export 'readString)

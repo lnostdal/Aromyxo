@@ -15,6 +15,3 @@
         (if val
             (values (first lst) val)
             (find2 fn (rest lst))))))
-(export 'find2)
-
-

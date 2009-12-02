@@ -26,7 +26,6 @@ OBJECTS can be a single object or a list of objects."
 Currently ~S is the one assigned."
                     object existing-parent)
             (setf (gethash object -delay-gc-) parent))))))
-(export 'delay-gc)
 
 
 (defun cancel-delay-gc (objects &optional (parent nil parent-supplied-p))
@@ -40,11 +39,9 @@ Currently ~S is the one assigned."
               (remhash object -delay-gc-))))
         (dolist (object (ensure-list objects))
           (remhash object -delay-gc-)))))
-(export 'cancel-delay-gc)
 
 
 (defmacro with-lifetime (parent &body body)
   "Top-level objects constructed in the lexical scope of BODY will be kept
 around (not GCed) for at least as long as PARENT is around."
   `(delay-gc ,parent (list ,@body)))
-(export 'with-lifetime)

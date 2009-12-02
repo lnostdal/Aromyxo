@@ -8,7 +8,6 @@
 
 (defclass mutex-slot-mixin-class ()
   ())
-(export 'mutex-slot-mixin-class)
 
 
 (defmethod slot-value-using-class :around ((class mutex-slot-mixin-class) instance slot-definition)

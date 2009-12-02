@@ -8,12 +8,10 @@
   `(let ((%with-object ,object))
      (declare (ignorable %with-object))
      ,@body))
-(export 'with-object)
 
 
 (defgeneric mderef (arg))
 (defgeneric (setf mderef) (new-value arg))
-(export 'mderef)
 
 
 #| The following weird'ish code is here because methods in SBCL won't currently dispatch at compile-time, but plain
@@ -62,7 +60,6 @@ TYPECASE can. ADD-DEREF-TYPE is used to "add new methods" vs. DEREF. |#
                     (remove-if (λ (tc) (eq nil (cadadr tc)))
                                -deref-typecase*-))
           (t (setf (mderef %arg) %new-value)))))))
-(export '(deref add-deref-type))
 
 
 (add-deref-type 'function

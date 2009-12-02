@@ -66,7 +66,6 @@ TODO: Add support for type declarations for stuff like this:
                                                             (equal '(values &optional) decl))
                                                           declarations))))
              ,@body)))))
-(export 'defn)
 
 
 

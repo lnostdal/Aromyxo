@@ -14,13 +14,11 @@
 (defmacro with-locked-object (locked-object &body body)
   `(with-recursive-lock-held ((lock-of ,locked-object))
      ,@body))
-(export 'with-locked-object)
 
 
 
 (defclass locked-object ()
   ((lock :reader lock-of)))
-(export '(locked-object lock-of))
 
 
 (defmethod initialize-instance :before ((locked-object locked-object) &key)
@@ -39,4 +37,3 @@
                 (values (setf (gethash object -object-locks-)
                               (make-recursive-lock (princ-to-string object)))
                         :created)))))))
-(export 'lock-of)

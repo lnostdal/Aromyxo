@@ -20,7 +20,6 @@
                ((#\') (write-string "&#039;" out))
                ((#\&) (write-string "&amp;" out))
                (otherwise (write-char char out)))))))
-(export 'escape-for-html)
 
 
 (declaim (inline htmlize))
@@ -30,4 +29,3 @@
     (escape-for-html (if (stringp obj)
                          obj
                          (princ-to-string obj)))))
-(export 'htmlize)

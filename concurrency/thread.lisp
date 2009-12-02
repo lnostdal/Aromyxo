@@ -23,13 +23,11 @@
                                           temp-names))
                             ,@body))
                         :name ,name)))))
-(export 'with-thread)
 
 
 (defmacro with-sthread (&body body)
   "Create and start a \"simple thread\"."
   `(sb-thread:make-thread (lambda () ,@body)))
-(export 'with-sthread)
 
 
 
@@ -42,29 +40,24 @@
 #|
 (defmacro interrupt-thread (thread &body body)
   `(sb-thread:interrupt-thread ,thread (lambda () ,@body)))
-(export 'interrupt-thread)
 
 
 (defmacro join-threads (&body threads)
   `(progn
      ,@(mapcar (lambda (thread) `(join-thread ,thread))
               threads)))
-(export 'join-threads)
 
 
 (defvar *threads* (make-hash-table))
-(export '*threads*)
 
 
 (defclass thread ()
   ((thread :reader thread-of)
    (groups :accessor groups-of)))
-(export '(thread thread-of id-of groups-of))
 
 
 (defmethod main ((thread thread))
   (error "Overide method `main' for `~A'~%" thread))
-(export 'main)
 
 
 (defmethod initialize-instance :after ((thread thread) &rest initargs &key &allow-other-keys)
@@ -80,6 +73,5 @@
 (defmethod instance-of ((low-level-thread sb-thread:thread))
   "Returns the instance associated with a low-level thread."
   (gethash low-level-thread *threads*))
-(export 'instance-of)
 
 |#

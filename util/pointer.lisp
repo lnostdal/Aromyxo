@@ -9,7 +9,6 @@
                     (:conc-name :ptr-)
                     (:copier nil))
   (value))
-(export '(pointer mk-ptr ptr-value))
 
 
 (add-deref-type 'pointer
@@ -25,4 +24,3 @@ designated by PLACE-FORM."
        (if ,value-supplied-p
            (setf ,place-form ,value)
            ,place-form))))
-(export 'place-fn)

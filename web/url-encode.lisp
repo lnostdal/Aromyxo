@@ -27,4 +27,3 @@
                                                             :end (locally (declare (optimize (safety 0)))
                                                                    (the fixnum (1+ index)))))
                          :do (format s "%~2,'0x" octet))))))))
-(export 'url-encode)

@@ -12,7 +12,6 @@
   (let ((pkg (find-package name)))
     (do-external-symbols (sym pkg)
       (shadowing-import sym))))
-(export 'shadowing-use-package)
 
 
 (defmacro define-package (name &key use nicknames)
@@ -26,4 +25,3 @@
           :collect `(eval-when (:compile-toplevel :load-toplevel :execute)
                       (do-external-symbols (sym (find-package ,pkg))
                         (shadowing-import sym (find-package ,name)))))))
-(export 'define-package)

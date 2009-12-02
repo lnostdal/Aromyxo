@@ -3,8 +3,8 @@
 (in-package #:aromyxo)
 
 
-(mk-meta-slot outgoing-connections-of) (export 'outgoing-connections-of)
-(mk-meta-slot incoming-connections-of) (export 'incoming-connections-of)
+(mk-meta-slot outgoing-connections-of)
+(mk-meta-slot incoming-connections-of)
 
 
 (let ((lock (make-lock "AM-UTIL:MK-CONNECTION")))
@@ -25,7 +25,7 @@ removed."
                                                          :synchronized t)))
               (setf (outgoing-connections-of from) outgoing-connections
                     (gethash to outgoing-connections) from))))
-      
+
       ;; FROM <-- TO
       (multiple-value-bind (incoming-connections found-p) (incoming-connections-of to)
         (if found-p
@@ -35,7 +35,7 @@ removed."
               (setf (incoming-connections-of to) incoming-connections
                     (gethash from incoming-connections) to))))
       (values))))
-(export 'mk-connection)
+
 
 
 (defun rm-connection (from to)
@@ -44,7 +44,6 @@ removed."
     (remhash from outgoing-connections))
   (when-let (incoming-connections (incoming-connections-of to))
     (remhash to incoming-connections)))
-(export 'rm-connection)
 
 
 (defun rm-connections (object)
@@ -63,7 +62,6 @@ removed."
                (declare (ignore not-used))
                (remhash object (outgoing-connections-of source)))
              incoming-connections)))
-(export 'rm-connections)
 
 
 (defmacro with-targets-of ((from &key (target-sym 'target)) &body body)
@@ -72,7 +70,6 @@ removed."
                 (declare (ignore ,source-sym)) ;; We already know; it's the same value as FROM.
                 ,@body)
               (outgoing-connections-of ,from))))
-(export '(with-targets-of target))
 
 
 (defmacro with-sources-of ((to &key (source-sym 'source)) &body body)
@@ -81,4 +78,3 @@ removed."
                 (declare (ignore ,target-sym)) ;; We already know; it's the same value as TO.
                 ,@body)
               (incoming-connections-of ,to))))
-(export '(with-sources-of source))

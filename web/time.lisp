@@ -18,7 +18,6 @@
             hour
             minute
             second)))
-(export 'rfc-1123-date)
 
 
 ;; From Hunchentoot.
@@ -28,4 +27,3 @@
       (decode-universal-time time)
     (format nil "~4,'0d-~2,'0d-~2,'0d ~2,'0d:~2,'0d:~2,'0d"
             year month date hour minute second)))
-(export 'iso-time)

@@ -33,4 +33,3 @@
                                              (otherwise char)))
                                 vector))
       (sb-ext:octets-to-string vector))))
-(export 'url-decode)

@@ -16,55 +16,45 @@ each call to it."
         (prog1
             (- current last)
           (setf last current))))))
-(export 'make-diff-timer)
 
 
 (defun sleep-minutes (minutes)
   "Sleep for `minutes' minutes."
   (sleep (* minutes 60)))
-(export 'sleepMinutes)
 
 
 (defun sleep-hours (hours)
   "Sleep for `hours' hours."
   (sleep (* hours 60 60)))
-(export 'sleep-hours)
 
 
 (defun sleep-days (days)
   "Sleep for `days' days."
   (sleep (* days 24 60 60)))
-(export 'sleep-days)
 
 
 (defun current-hour ()
   (third (mvlist (decode-universal-time (get-universal-time)))))
-(export 'current-hour)
 
 
 (defun current-day ()
   (fourth (mvlist (decode-universal-time (get-universal-time)))))
-(export 'current-day)
 
 
 (defun current-minute ()
   (second (mvlist (decode-universal-time (get-universal-time)))))
-(export 'current-minute)
 
 
 (defun current-second ()
   (first (mvlist (decode-universal-time (get-universal-time)))))
-(export 'current-second)
 
 
 (defun current-month ()
   (fifth (mvlist (decode-universal-time (get-universal-time)))))
-(export 'current-month)
 
 
 (defun current-year ()
   (sixth (mvlist (decode-universal-time (get-universal-time)))))
-(export 'current-year)
 
 
 (defmacro with-time-limiter (at-least-ms &body body)
@@ -77,4 +67,3 @@ I will sleep the remaining time before continuing."
                                             ,start-time ))))
          (when (plusp ,remaining)
            (sleep (/ ,remaining 1000)))))))
-(export 'with-time-limiter)

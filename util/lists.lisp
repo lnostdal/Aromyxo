@@ -11,7 +11,6 @@
          (second option)
        (setf ,options (delete (first option) ,options :key #'first)))
      ,default-value))
-(export 'extract-option)
 
 
 (defmacro last1 (lst)
@@ -19,7 +18,6 @@
 \(last  '(a b c)) => (c)
 \(last1 '(a b c)) => c"
   `(car (last ,lst)))
-(export 'last1)
 
 
 (declaim (inline mklst))
@@ -31,7 +29,6 @@
   (if (listp obj)
       obj
       (list obj)))
-(export 'mklst)
 
 
 (declaim (inline group))
@@ -48,7 +45,6 @@
                    (rec rest (cons (subseq source 0 n) acc))
                    (nreverse (cons source acc))))))
     (if source (rec source nil) nil)))
-(export 'group)
 
 
 (defun exchange (element-1 element-2 list &rest args)
@@ -58,7 +54,6 @@
     (setf (car sub-1) element-2
           (car sub-2) element-1))
   list)
-(export 'exchange)
 
 
 ;; TODO: This stuff is stupid.
@@ -110,4 +105,3 @@ LIST-PLACE is created by the PLACE-FN macro or the ↺ macro character.
 
       (t
        (error ":AFTER or :BEFORE, or :FIRST-P or :LAST-P needed.")))))
-(export 'insert)

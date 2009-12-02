@@ -23,7 +23,6 @@
 
        (defmethod slot-data-of ((accessor-name (eql ',accessor-name)))
          ,slot-data))))
-(export '(mk-meta-slot object slot-data-of))
 
 
 (declaim (inline mk-id-generator)
@@ -32,7 +31,6 @@
 (defun mk-id-generator ()
   (declare (optimize speed))
   (cons 0 (make-lock)))
-(export 'mk-id-generator)
 
 
 (declaim (inline id-generator-next)
@@ -43,7 +41,6 @@
   (with-lock-held ((cdr id-generator))
     (muffle-compiler-note
       (incf (car id-generator)))))
-(export 'id-generator-next)
 
 
 (declaim (inline id-generator-next-str)
@@ -55,20 +52,17 @@
                    :pretty nil
                    :escape nil
                    :base 36))
-(export 'id-generator-next-str)
 
 
 
 (define-variable -id-generator-
     :kind :global
     :value (mk-id-generator))
-(export '-id-generator-)
 
 
 (defclass id-mixin ()
   ((id :reader id-of
        :type string)))
-(export '(id-mixin id id-of))
 
 
 (defmethod initialize-instance :before ((obj id-mixin) &key (id nil id-supplied-p))

@@ -9,11 +9,9 @@
   ;; TODO: Better way to do this?
   (sb-ext:schedule-timer (sb-ext:make-timer (let ((objects objects)) (lambda () objects)) :thread t)
                          seconds))
-(export 'avoid-gc)
 
 
 (mk-meta-slot object-cache-of) ;; from object.lisp
-(export 'object-cache-of)
 
 
 (defun cache-object (object &key (avoid-gc nil avoid-gc-supplied-p))
@@ -31,7 +29,6 @@ Returns ID and CLASS which can be passed to GET-OBJ later."
       (when avoid-gc-supplied-p
         (avoid-gc avoid-gc object))
       (values id class))))
-(export 'cache-object)
 
 
 (defun get-object (id class)
@@ -51,7 +48,6 @@ CLASS can be a symbol or a CLASS type."
               (values obj t t)
               (values nil nil t)))
         (values nil nil nil))))
-(export 'get-object)
 
 
 (defun uncache-object (object)
@@ -63,7 +59,6 @@ found."
     (if found-p
         (remhash (id-of object) object-cache)
         nil)))
-(export 'uncache-object)
 
 
 
@@ -74,7 +69,6 @@ found."
 This is for extremely lazy users like me; inherit from this and you do not need
 to add the created objects to \"the cache\" yourself.
 You most likely want to override the ID-OF method when inheriting from this class."))
-(export 'cached-object)
 
 
 (defmethod initialize-instance :around ((object cached-object) &key (avoid-gc nil avoid-gc-supplied-p))

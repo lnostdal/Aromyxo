@@ -10,7 +10,6 @@
          (mapcar (lambda (expr) `((,@(incf i)) ,expr))
                  expressions))
      (otherwise (error "`nth-expr': out of bounds."))))
-(export 'nth-expr)
 
 
 (defmacro nil-if (test-value value &optional (test 'equal))
@@ -22,7 +21,6 @@ once."
        (if (,test ,res-value ,test-value)
            nil
            ,res-value))))
-(export 'nil-if)
 
 
 (defmacro nil-if-equal (test-value value &optional (test 'equal))
@@ -34,7 +32,6 @@ once."
        (if (,test ,res-value ,test-value)
            nil
            ,res-value))))
-(export 'nil-if-equal)
 
 
 (defmacro value-if (test value-and-then &optional (else nil))
@@ -45,7 +42,6 @@ return `value-and-then' else return `else'."
        (if (,test ,res)
            ,res
            ,else))))
-(export 'value-if)
 
 
 (defmacro if3 (test t-case nil-case ?-case)
@@ -53,8 +49,6 @@ return `value-and-then' else return `else'."
      ((nil) ,nil-case)
      (? ,?-case)
      (t ,t-case)))
-(export 'if3)
-
 
 
 (defmacro nif (expr pos zero neg)
@@ -65,8 +59,6 @@ evaluates to."
       (cond ((plusp ,val) ,pos)
             ((zerop ,val) ,zero)
             (t ,neg)))))
-(export 'nif)
-
 
 
 (defmacro in ((obj &key (test 'eq) key) &rest choices)
@@ -77,8 +69,6 @@ evaluates to."
        (or ,@(mapcar (lambda (c)
                        `(,test ,insym ,(if key `(,key ,c) c)))
                      choices)))))
-(export 'in)
-
 
 
 (defmacro inq ((obj &key (test 'equal) (key 'self)) &rest choices)
@@ -86,8 +76,6 @@ evaluates to."
   `(in (,obj :test ,test :key ,key) ,@(mapcar (lambda (a)
                                      `',a)
                                    choices)))
-(export 'inq)
-
 
 
 (defmacro in-if (fn &rest choices)
@@ -96,8 +84,6 @@ evaluates to."
        (or ,@(mapcar (lambda (c)
                          `(funcall ,fnsym ,c))
                      choices)))))
-(export 'in-if)
-
 
 
 (defun >casex (g cl)
@@ -107,14 +93,12 @@ evaluates to."
           (t (error "bad >case clause")))))
 
 
-
 (defmacro >case (expr &rest clauses)
   "A case where the keys are evaluated."
   (let ((g (gensym)))
     `(let ((,g ,expr))
       (cond ,@(mapcar #'(lambda (cl) (>casex g cl))
                       clauses)))))
-(export '>case)
 
 
 (defmacro any (&rest forms)
@@ -122,4 +106,3 @@ evaluates to."
   (with-gensyms (elt)
     `(dolist (,elt (list ,@forms))
        (when ,elt (return ,elt)))))
-(export 'any)

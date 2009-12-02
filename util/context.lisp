@@ -14,7 +14,6 @@
             (retry ()
               :report (lambda (stream) (format stream "retry"))
               (go ,retry-tag)))))))
-(export 'retryable)
 
 
 (defmacro macrolet* (definitions &body body)
@@ -23,7 +22,6 @@
       `(macrolet (,(first definitions))
          (macrolet* ,(rest definitions)
            ,@body))))
-(export 'macrolet*)
 
 
 (defmacro with-nth ((&rest names) list
@@ -33,7 +31,6 @@
                              :for name :in names
                           :collect `(,name (nth ,index ,list)))
        ,@body)))
-(export 'with-nth)
 
 
 (defmacro letp1 (bindings &body body)
@@ -41,23 +38,19 @@
   `(let ,bindings
      (prog1 ,(caar bindings)
        ,@body)))
-(export 'letp1)
 
 
 (defmacro with (it &body body)
   `(let ((it ,it))
      ,@body))
-(export '(with it))
 
 
 (defmacro with1 (it &body body)
   `(letp1 ((it ,it))
      ,@body))
-(export 'with1)
 
 
 (defmacro withp (it &body body)
   `(let ((it ,it))
      (when (and it (progn ,@body))
        it)))
-(export '(withp it))

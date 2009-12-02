@@ -2,17 +2,6 @@
 
 (in-package :aromyxo)
 
-(export '(queue
-          queue-head queue-head-lock
-          queue-tail queue-tail-lock
-          mk-queue
-          with-queue-items items
-          queue-pop
-          queue-push
-          queue-push*
-          queue-merge))
-
-
 (defstruct (queue (:constructor %mk-queue)
                   (:conc-name :queue-)
                   (:copier nil))
@@ -24,7 +13,7 @@
 
 (defmethod print-object ((queue queue) stream)
   (print-unreadable-object (queue stream :identity t :type t)
-    (muffle-compiler-note 
+    (muffle-compiler-note
      (format stream ":HEAD ~S :TAIL ~S" (queue-head queue) (queue-tail queue)))))
 
 
@@ -89,7 +78,3 @@ isolated view of what items QUEUE contain."
   "Append RIGHT-QUEUE to QUEUE. This only modifies QUEUE."
   (with-queue-items (right-queue)
     (queue-push* queue items)))
-
-
-
-

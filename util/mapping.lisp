@@ -14,7 +14,6 @@
        (result nil))
       ((> i b) (nreverse result))
     (push (funcall fn i) result)))
-(export 'mapa-b)
 
 
 (declaim (inline map0-n))
@@ -22,7 +21,6 @@
   (declare (function fn)
            (number n step))
   (mapa-b fn 0 n step))
-(export 'map0-n)
 
 
 (declaim (inline map1-n))
@@ -30,7 +28,6 @@
   (declare (function fn)
            (number n step))
   (mapa-b fn 1 n step))
-(export 'map1-n)
 
 
 (declaim (inline map->))
@@ -40,7 +37,6 @@
        (result nil))
       ((funcall test-fn i) (nreverse result))
     (push (funcall fn i) result)))
-(export 'map->)
 
 
 (declaim (inline mapcars))
@@ -52,7 +48,6 @@
       (dolist (obj lst)
         (push (funcall fn obj) result)))
     (nreverse result)))
-(export 'mapcars)
 
 
 (declaim (inline rmapcar))
@@ -65,4 +60,3 @@
              #'(lambda (&rest args)
                  (apply #'rmapcar fn args))
              args)))
-(export 'rmapcar)

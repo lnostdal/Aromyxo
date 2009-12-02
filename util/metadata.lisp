@@ -42,7 +42,6 @@
                  ,(if not-found-value-supplied-p
                       `(values (setf (gethash ,key ,key->value) ,not-found-value) :added)
                       `(values nil nil)))))))))
-(export 'metadata-of)
 
 
 (defsetf metadata-of set-metadata)

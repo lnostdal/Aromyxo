@@ -3,14 +3,8 @@
 (in-package #:aromyxo)
 
 
-(defparameter *newline-str*
-  (format nil "~C" #\Newline))
-(export '*newline-str*)
-
-
 (defun fmtn (control-string &rest format-arguments)
   (apply #'format nil control-string format-arguments))
-(export 'fmtn)
 
 
 ;; §4.7 Symbols and Strings
@@ -23,7 +17,6 @@
   (with-output-to-string (s)
     (dolist (a args)
       (princ a s))))
-(export 'mkstr)
 
 
 (defmacro cstr (&rest args)
@@ -31,12 +24,10 @@
   (with-output-to-string (str)
     (dolist (elt args)
       (princ elt str))))
-(export 'cstr)
 
 
 (defmacro catstr (&body args)
   `(concatenate 'string ,@args))
-(export 'catstr)
 
 
 (defmethod string<- (obj)
@@ -44,4 +35,3 @@
       obj
       (let ((*print-pretty* nil))
         (princ-to-string obj))))
-(export 'string<-)

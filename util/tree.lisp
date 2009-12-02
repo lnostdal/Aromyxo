@@ -14,4 +14,3 @@
                  (map-tree x fn)))
        tree)
   (values))
-(export 'map-tree)

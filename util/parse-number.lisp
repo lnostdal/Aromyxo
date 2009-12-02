@@ -42,7 +42,6 @@
   (:report (lambda (c s)
              (format s "Invalid number: ~S [Reason: ~A]"
                      (value c) (reason c)))))
-(export 'invalid-number)
 
 (declaim (inline parse-integer-and-places))
 (defun parse-integer-and-places (string start end &key (radix 10))
@@ -147,7 +146,7 @@
                                                          \)-pos)
                                                 :radix radix)))))))
           (parse-real-number string :start start :end end :radix radix)))))
-(export 'parse-number)
+
 
 (defun parse-real-number (string &key (start 0) (end nil) (radix 10))
   "Given a string, and start, end, and radix parameters, produce a number according to the syntax definitions in the Common Lisp Hyperspec -- except for complex numbers."
@@ -194,7 +193,7 @@
                                      :start start
                                      :end end
                                      :radix radix)))))
-(export 'parse-real-number)
+
 
 (defun parse-positive-real-number (string &key (start 0) (end nil) (radix 10))
   "Given a string, and start, end, and radix parameters, produce a number according to the syntax definitions in the Common Lisp Hyperspec -- except for complex numbers and negative numbers."

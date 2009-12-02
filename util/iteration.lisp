@@ -9,4 +9,3 @@
     `(let ((,result nil))
        (do () ((not ,pred) ,result)
          (setf ,result (progn ,@body))))))
-(export 'while)

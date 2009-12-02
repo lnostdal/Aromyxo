@@ -54,11 +54,9 @@
 
          ,@(when (and always-boundp (eq kind (or :var :parameter)))
                  `((eval-now (proclaim '(sb-ext:always-bound ,name)))))))))
-(export 'define-variable)
 
 
 (defmacro define-global (var value &optional doc)
   (warn "DEFINE-GLOBAL is deprecated; use DEFINE-VARIABLE
 with :GLOBAL supplied for the :KIND arg.")
   `(sb-ext:defglobal ,var ,value ,doc))
-(export 'define-global)

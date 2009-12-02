@@ -7,7 +7,6 @@
 (defun really-slot-boundp (instance eslotd)
   (not (eq (standard-instance-access instance (slot-definition-location eslotd))
            sb-pcl::+slot-unbound+)))
-(export 'really-slot-boundp)
 
 
 (defmacro class-forward-reference (class-sym &body class-options)
@@ -16,7 +15,6 @@
        (defclass ,class-sym ()
          ()
          ,@class-options))))
-(export 'class-forward-reference)
 
 
 (defun all-subclasses-of (class-sym &optional (include-class-sym-p t))
@@ -30,19 +28,16 @@
         (push (find-class class-sym) all-subclasses))
       (inner (find-class class-sym)))
     all-subclasses))
-(export 'all-subclasses-of)
 
 
 (defun initargs-of (class-sym)
   (flatten (mapcar #'closer-mop:slot-definition-initargs
                    (closer-mop:class-slots (find-class class-sym)))))
-(export 'initargs-of)
 
 
 (defun slots-of (class-sym)
   (mapcar #'closer-mop:slot-definition-name
           (closer-mop:class-slots (find-class class-sym))))
-(export 'slots-of)
 
 
 #|
@@ -57,11 +52,9 @@ Inherit from the class SELF-REF to do things like:
 
 |#
 (define-variable *self-refs* :value nil)
-(export '*self-refs*)
 
 (defclass self-ref ()
   ())
-(export 'self-ref)
 
 ;; Note that *SELF-REFS* is not visible to code in :DEFAULT-INITARGS.
 (defmethod initialize-instance :around ((self-ref self-ref) &key)
@@ -73,7 +66,6 @@ Inherit from the class SELF-REF to do things like:
 (defun self ()
   "Returns the instance currently being constructed."
   (first *self-refs*))
-(export 'self)
 
 #| When creating closures (SELF) will not work, but since the user might already be using the ↑ reader macro, we fall
 back to the lexical binding which points to what (SELF) returned. |#
@@ -81,13 +73,11 @@ back to the lexical binding which points to what (SELF) returned. |#
     (if (lexically-bound-p %with-object)
         %with-object
         (self)))
-(export '=self=)
 
 
 (defmacro with-direct-slots-in (instance slot-value-sym &body body)
   `(dolist (,slot-value-sym (closer-mop:class-direct-slots (class-of ,instance)))
      ,@body))
-(export 'with-direct-slots-in)
 
 
 (defmacro with-bound-direct-slots-in ((instance slot-name-sym &optional slot-value-sym) &body body)
@@ -100,13 +90,11 @@ back to the lexical binding which points to what (SELF) returned. |#
                 `((let ((,slot-value-sym (slot-value ,instance (closer-mop:slot-definition-name ,direct-slot))))
                     ,@body))
                 body)))))))
-(export 'with-bound-direct-slots-in)
 
 
 (defmacro with-slots-in (instance slot-value-sym &body body)
   `(dolist (,slot-value-sym (closer-mop:class-slots (class-of ,instance)))
      ,@body))
-(export 'with-slots-in)
 
 
 (defmacro with-bound-slots-in ((instance slot-name-sym &optional slot-value-sym) &body body)
@@ -119,7 +107,6 @@ back to the lexical binding which points to what (SELF) returned. |#
                 `((let ((,slot-value-sym (slot-value ,instance ,slot-name-sym)))
                     ,@body))
                 body)))))))
-(export 'with-bound-slots-in)
 
 
 (defmacro with-unbound-slots-in ((instance slot-name-sym) &body body)
@@ -129,7 +116,6 @@ back to the lexical binding which points to what (SELF) returned. |#
          (let ((,slot-name-sym (closer-mop:slot-definition-name ,slot)))
            (unless (slot-boundp ,instance ,slot-name-sym)
              ,@body))))))
-(export 'with-unbound-slots-in)
 
 
 
@@ -142,7 +128,6 @@ Meta-classes can inherit from this class and supply a :default-initarg for
 :ensured-superclass that will mention a symbol referring to a class that is
 to always be among the superclasses of instances of the class defined using
 the meta-class in question."))
-(export 'ensure-superclass-class)
 
 
 (defmethod initialize-instance :around ((class ensure-superclass-class) &rest initargs &key

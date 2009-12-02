@@ -10,7 +10,6 @@
           (sb-thread:holding-mutex-p lock))
         nil
         (acquire-lock lock))))
-(export 'acquire-recursive-lock)
 
 
 
@@ -26,25 +25,18 @@
      `(sb-thread:make-mutex :value ,value))
     (t
      `(sb-thread:make-mutex))))
-(export '(make-mutex mutex))
-
 
 
 (defmethod name-of ((mutex sb-thread:mutex))
   (sb-thread:mutex-name mutex))
-(export 'name-of)
-
 
 
 (defmethod (setf name-of) (new-name (mutex sb-thread:mutex))
   (setf (sb-thread:mutex-name mutex) new-name))
-(export 'name-of)
-
 
 
 (defmethod value-of ((mutex sb-thread:mutex))
   (sb-thread:mutex-value mutex))
-(export 'value-of)
 
 
 
@@ -58,8 +50,6 @@ and the mutex is in use, sleep until it is available"
          ,@body)
       `(sb-thread:with-mutex (,mutex :wait-p ,wait-p)
          ,@body)))
-(export 'with-mutex)
-
 
 
 (defmacro with-rmutex (mutex &body body)
@@ -67,6 +57,4 @@ and the mutex is in use, sleep until it is available"
 times by the same thread."
   `(sb-thread:with-recursive-lock (,mutex)
      ,@body))
-(export 'with-rmutex)
-
 |#

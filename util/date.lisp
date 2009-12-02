@@ -25,7 +25,6 @@
     ((string-equal month "november") 11)
     ((string-equal month "desember") 12)
     (t (error "~S is not a known Norwegian month." month))))
-(export 'parse-norwegian-month)
 
 
 
@@ -33,7 +32,6 @@
   ((year :initform "%" :accessor year-of :initarg :year)
    (month :initform "%" :accessor month-of :initarg :month)
    (day :initform "%" :accessor day-of :initarg :day)))
-(export '(date year-of month-of day-of))
 
 
 (defmethod initialize-instance :after ((date date) &key)
@@ -63,7 +61,6 @@
           (year-of date)
           (pad-number (month-of date))
           (pad-number (day-of date))))
-(export 'string<-)
 
 
 (defmethod search-string<- ((date date))
@@ -71,7 +68,6 @@
           (year-of date)
           (pad-number (month-of date))
           (pad-number (day-of date))))
-(export 'search-string<-)
 
 
 (defmethod date<- ((date-string string) &key (split-character #\-) parse-as-nil)
@@ -85,7 +81,6 @@
                        :year (first date)
                        :month (second date)
                        :day (third date)))))
-(export 'date<-)
 
 
 (defmethod date<- ((date-list list) &key)
@@ -93,13 +88,11 @@
                  :year (first date-list)
                  :month (second date-list)
                  :day (third date-list)))
-(export 'date<-)
 
 
 (defmethod list<- ((date date) &rest x)
   (declare (ignore x))
   (list (year-of date) (month-of date) (day-of date)))
-(export 'list<-)
 
 
 (defmethod norwegian-date-string-of ((date date) &optional (not-known "xx"))
@@ -125,4 +118,3 @@
           (if-let (year (year-of date))
             year
             not-known)))
-(export 'norwegian-date-string-of)

@@ -28,7 +28,6 @@ This will return a unique designated waitqueue for OBJECT."
                 (values (setf (gethash object -object->waitqueue-)
                               (make-waitqueue :name name))
                         :created)))))))
-(export 'waitqueue-of)
 
 
 (eval-now (unintern 'condition-wait))
@@ -41,7 +40,6 @@ OBJECT."
   (declare (mutex lock))
   (sb-thread:condition-wait (waitqueue-of object)
                             lock))
-(export 'condition-wait)
 
 
 (eval-now (unintern 'condition-notify))
@@ -53,7 +51,6 @@ called. NUMBER refers to the number of threads waiting on OBJECT we should
 notify or attempt to wake up."
   (sb-thread:condition-notify (waitqueue-of object)
                               number))
-(export 'condition-notify)
 
 
 (eval-now (unintern 'condition-broadcast)) ;; This one is not from BT, but from SB-THREAD so it has a lock.
@@ -61,7 +58,6 @@ notify or attempt to wake up."
   "OBJECT is the thing which holds or \"represents\" the queue.
 The lock held when calling CONDITION-WAIT must be held when this is called."
   (sb-thread:condition-broadcast (waitqueue-of object)))
-(export 'condition-broadcast)
 
 
 (defmacro with-waitqueue ((object more-elements-check &key (lock `(lock-of ,object)))
@@ -77,7 +73,6 @@ T if there are more elements in the queue."
       (with-recursive-lock-held (,lock)
         (unless ,more-elements-check
           (sb-thread:condition-wait (waitqueue-of ,object) ,lock)))))
-(export 'with-waitqueue)
 
 
 

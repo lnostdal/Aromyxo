@@ -22,4 +22,3 @@
               :element-type (array-element-type array)
               :displaced-to array
               :displaced-index-offset start))
-(export 'mk-array-view)

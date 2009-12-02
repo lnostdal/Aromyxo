@@ -27,7 +27,6 @@ SB-EXT:UNSCHEDULE-TIMER."
                   (when execute-callback-p
                     (funcall callback)))))
             timer)))
-(export 'mk-delay-callback)
 
 
 (defmacro with-timeout ((seconds &body on-timeout) &body body)
@@ -41,7 +40,6 @@ SB-EXT:UNSCHEDULE-TIMER."
              ,@body))
        (skip-body ()
          :report "Skip the `body'-form. (with-timeout)"))))
-(export '(with-timeout skip-body))
 
 
 
@@ -52,10 +50,8 @@ SB-EXT:UNSCHEDULE-TIMER."
                                     ,@body))))
      (sb-ext:schedule-timer timer ,seconds)
      timer))
-(export 'schedule)
 
 
 (defun unschedule (timer)
   (sb-ext:unschedule-timer timer))
-(export 'unschedule)
 |#
