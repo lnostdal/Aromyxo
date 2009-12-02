@@ -89,4 +89,5 @@
              (:file "url-decode")
              (:file "url-encode")
              ))
+   (:file "package-exports")
    ))

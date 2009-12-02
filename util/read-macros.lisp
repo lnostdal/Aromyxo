@@ -51,4 +51,3 @@
                           (declare (ignore char arg))
                           `(mk-ptr ,(read stream))))
   )
-(export 'aromyxo)
