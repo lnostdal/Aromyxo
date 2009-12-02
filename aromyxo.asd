@@ -20,9 +20,9 @@
    (:module util
             :serial t
             :components
-            ((:file "util") ;; TODO: This also contains some code. Should probably move stuff around.
+            ((:file "read-macros")
+             (:file "util")
              (:file "define-package")
-             (:file "read-macros")
              (:file "types")
              (:file "define-variable")
              (:file "lex-env")

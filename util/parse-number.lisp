@@ -30,7 +30,7 @@
 ;;;; OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 ;;;; SUCH DAMAGE.
 
-(in-package aromyxo)
+(in-package :aromyxo)
 
 (define-condition invalid-number (error)
   ((value :reader value

@@ -1,8 +1,7 @@
 ;;;; http://nostdal.org/ ;;;;
 
-(in-package aromyxo)
-(in-readtable aromyxo)
-
+(in-package :aromyxo)
+=common-headers=
 
 (defmacro retryable (&body body)
   (with-gensyms (retry-tag block-name)

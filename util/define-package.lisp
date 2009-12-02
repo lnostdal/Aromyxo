@@ -1,6 +1,7 @@
 ;;;; http://nostdal.org/ ;;;;
 
 (in-package :aromyxo)
+=common-headers=
 
 
 (defun %define-package-mk (name &optional nicknames)

@@ -1,6 +1,7 @@
 ;;;; http://nostdal.org/ ;;;;
 
-(in-package aromyxo)
+(in-package :aromyxo)
+=common-headers=
 
 
 ;; IMHO Slime/Swank should do this already, but ok. TODO: This doesn't really belong here ..

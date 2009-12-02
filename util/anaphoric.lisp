@@ -1,7 +1,7 @@
 ;;;; http://nostdal.org/Aromyxo/ ;;;;
 
-(in-package aromyxo)
-(in-readtable aromyxo)
+(in-package :aromyxo)
+=common-headers=
 
 ;; These are modified "anaphoric" macros.
 

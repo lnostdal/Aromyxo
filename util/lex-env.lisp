@@ -1,7 +1,7 @@
 ;;;; http://nostdal.org/ ;;;;
 
-(in-package aromyxo)
-(in-readtable aromyxo)
+(in-package :aromyxo)
+=common-headers=
 
 #| TODO: Most of this stuff doesn't actually work. Why it should be a "big thing" being able to extract type
 information from a compiler like this is puzzling. |#

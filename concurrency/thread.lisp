@@ -1,7 +1,7 @@
 ;;;; http://nostdal.org/ ;;;;
 
-(in-package aromyxo)
-(in-readtable aromyxo)
+(in-package :aromyxo)
+=common-headers=
 
 
 ;; TODO: Bordeaux-Threads suddenly creates a new (non-random ....) *random-state*

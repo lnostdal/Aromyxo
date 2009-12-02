@@ -19,7 +19,7 @@
   (shadowing-import '(cl:nil) (find-package :amx))
   (export '(nil) (find-package :amx)))
 
-(in-package amx)
+(in-package :aromyxo)
 
 
 #| We solve conflicts by "brute force" here. If two packages have conflicting symbols, the package handled last will
@@ -54,3 +54,8 @@
 (do-external-symbols (sym (find-package :bordeaux-threads))
   (shadowing-import sym)
   (export sym))
+
+
+
+(define-symbol-macro =common-headers=
+    (in-readtable aromyxo))

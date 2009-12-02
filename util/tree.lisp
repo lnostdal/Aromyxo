@@ -1,7 +1,7 @@
 ;;;; http://nostdal.org/ ;;;;
 
-(in-package aromyxo)
-(in-readtable aromyxo)
+(in-package :aromyxo)
+=common-headers=
 
 
 (defun map-tree (tree fn)

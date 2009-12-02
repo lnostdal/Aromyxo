@@ -1,7 +1,7 @@
 ;;;; http://nostdal.org/ ;;;;
 
-(in-package aromyxo)
-(in-readtable aromyxo)
+(in-package :aromyxo)
+=common-headers=
 (declaim (optimize speed))
 
 ;; We unintern here so that we don't re-define stuff from bordeaux-threads.

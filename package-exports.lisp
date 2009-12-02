@@ -1,7 +1,7 @@
 ;;;; http://nostdal.org/ ;;;;
 
 (in-package :aromyxo)
-(in-readtable aromyxo)
+=common-headers=
 
 
 ;; TODO: Describe why I do this in some blog-post or something. Short; this also exports symbols from CL, so users should use the AROMYXO package instead of the CL package. The point -- besides me being lazy, is that conflicts can be dealt with _once_ and the result/solution trickles town to sub-sub-sub..-packages.
