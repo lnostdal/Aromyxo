@@ -27,14 +27,14 @@
   (let ((*context* ctx))
     (labels ((context-init (bindings)
                (funcall (car bindings) (lambda () (context-init (cdr bindings))))))
-      (context-init (append (bindings-of ctx)
-                            (list (lambda (cnt)
-                                    (declare (ignore cnt)) ;; End of the line.
-                                    (unwind-protect
-                                         (progn
-                                           (context-start ctx)
-                                           (funcall body))
-                                      (context-cleanup ctx)))))))))
+      (context-init (reverse (cons (lambda (cnt)
+                                     (declare (ignore cnt)) ;; End of the line.
+                                     (unwind-protect
+                                          (progn
+                                            (context-start ctx)
+                                            (funcall body))
+                                       (context-cleanup ctx)))
+                                   (bindings-of ctx)))))))
 
 
 (defmacro with-context (ctx &body body)
