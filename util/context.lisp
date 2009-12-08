@@ -3,53 +3,39 @@
 (in-package :aromyxo)
 =common-headers=
 
-(defmacro retryable (&body body)
-  (with-gensyms (retry-tag block-name)
-    `(block ,block-name
-       (tagbody
-          ,retry-tag
-          (restart-case
-              (return-from ,block-name (progn ,@body))
-            (retry ()
-              :report (lambda (stream) (format stream "retry"))
-              (go ,retry-tag)))))))
+
+(defclass context ()
+  ((bindings :reader bindings-of :initarg :bindings
+             :initform nil)))
 
 
-(defmacro macrolet* (definitions &body body)
-  (if (null definitions)
-      `(progn ,@body)
-      `(macrolet (,(first definitions))
-         (macrolet* ,(rest definitions)
-           ,@body))))
+(define-variable *context*
+    :value nil
+    :type (or context null)
+    :doc "The current CONTEXT, or NIL if there is no current CONTEXT.")
 
 
-(defmacro with-nth ((&rest names) list
-                    &body body)
-  (once-only (list)
-    `(symbol-macrolet ,(loop :for index :from 0 :to (length names)
-                             :for name :in names
-                          :collect `(,name (nth ,index ,list)))
-       ,@body)))
+(defmethod context-start ((ctx context))
+  )
 
 
-(defmacro letp1 (bindings &body body)
-  "First value of BINDINGS is returned."
-  `(let ,bindings
-     (prog1 ,(caar bindings)
-       ,@body)))
+(defmethod context-cleanup ((ctx context))
+  )
 
 
-(defmacro with (it &body body)
-  `(let ((it ,it))
-     ,@body))
+(defmethod context-body ((ctx context) body)
+  (let ((*context* ctx))
+    (labels ((context-init (bindings)
+               (funcall (car bindings) (lambda () (context-init (cdr bindings))))))
+      (context-init (append (bindings-of ctx)
+                            (list (lambda (cnt)
+                                    (declare (ignore cnt)) ;; End of the line.
+                                    (unwind-protect
+                                         (progn
+                                           (context-start ctx)
+                                           (funcall body))
+                                      (context-cleanup ctx)))))))))
 
 
-(defmacro with1 (it &body body)
-  `(letp1 ((it ,it))
-     ,@body))
-
-
-(defmacro withp (it &body body)
-  `(let ((it ,it))
-     (when (and it (progn ,@body))
-       it)))
+(defmacro with-context (ctx &body body)
+  `(context-body ,ctx (lambda () ,@body)))

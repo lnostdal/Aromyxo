@@ -28,6 +28,7 @@
              (:file "lex-env")
              (:file "printing")
              (:file "conditional-evaluation")
+             (:file "context-aux")
              (:file "context")
              (:file "deref") ;; TODO: This actually contains the code for the WITH-OBJECT macro.
              (:file "parse-number")
