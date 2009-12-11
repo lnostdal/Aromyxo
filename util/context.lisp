@@ -4,9 +4,10 @@
 =common-headers=
 
 
-(defclass context ()
-  ((bindings :reader bindings-of :initarg :bindings
-             :initform nil)))
+(eval-now
+  (defclass context ()
+    ((bindings :accessor bindings-of :initarg :bindings
+               :initform nil))))
 
 
 (define-variable *context*
