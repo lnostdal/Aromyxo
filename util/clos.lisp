@@ -159,3 +159,8 @@ the meta-class in question."))
                      :direct-superclasses (push ensure-superclass direct-superclasses)
                      initargs)))
         (call-next-method))))
+
+
+(defun slot-definition-type-check-function (slot-definition)
+  #+sbcl(sb-pcl::slot-definition-type-check-function slot-definition))
+(export 'slot-definition-type-check-function)
