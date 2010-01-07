@@ -12,7 +12,7 @@
                             (declare (ignore char arg))
                             `(lambda () ,(read stream))))
 
-  (:dispatch-macro-char #\λ #\a
+  (:dispatch-macro-char #\λ #\A
                         #'(lambda (stream char arg)
                             (declare (ignore char arg))
                             `(mk-atom ,(read stream))))
@@ -49,5 +49,4 @@
   (:dispatch-macro-char #\# #\&
                         (lambda (stream char arg)
                           (declare (ignore char arg))
-                          `(mk-ptr ,(read stream))))
-  )
+                          `(mk-ptr ,(read stream)))))

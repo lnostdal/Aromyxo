@@ -62,6 +62,7 @@ Inherit from the class SELF-REF to do things like:
     (when (next-method-p)
       (call-next-method))))
 
+
 (declaim (inline self))
 (defun self ()
   "Returns the instance currently being constructed."
