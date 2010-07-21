@@ -1,5 +1,7 @@
 ;;;; http://nostdal.org/ ;;;;
 
+;; http://blog.nostdal.org/2009/12/execution-context-handling.html
+
 (in-package :aromyxo)
 =common-headers=
 

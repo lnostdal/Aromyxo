@@ -25,12 +25,14 @@
          ,slot-data))))
 
 
+(eval-now
 (declaim (inline mk-id-generator)
          (ftype (function () (values (cons integer mutex) &optional))
                 mk-id-generator))
 (defun mk-id-generator ()
   (declare (optimize speed))
   (cons 0 (make-lock)))
+)
 
 
 (declaim (inline id-generator-next)
