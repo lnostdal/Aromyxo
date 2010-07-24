@@ -54,3 +54,15 @@
   `(let ((it ,it))
      (when (and it (progn ,@body))
        it)))
+
+
+(defmacro let-spec ((var-name initial-value) &body body)
+  "This is used to create a context for one to add data to a special/dynamic
+variable in a recursive fashion while at the same time having introduced that
+variable in the recursively called code."
+  (with-gensyms (bodym)
+    `(flet ((,bodym () ,@body))
+       (if (boundp ',var-name)
+           (,bodym)
+           (let ((,var-name ,initial-value))
+             (,bodym))))))
