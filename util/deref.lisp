@@ -39,7 +39,7 @@ TYPECASE can. ADD-DEREF-TYPE is used to "add new methods" vs. DEREF. |#
            :key #'first :test #'eq)
   (eval
    `(progn
-      #|(declaim (inline deref))|# ;; TODO: SBCL is currently too stupid to actually do this; *gah..*.
+      (declaim (inline deref))
       (defun deref (%arg)
         (declare (optimize speed (safety 0)))
         (typecase %arg
@@ -48,7 +48,7 @@ TYPECASE can. ADD-DEREF-TYPE is used to "add new methods" vs. DEREF. |#
           ;; Fall back to CLOS method dispatch.
           (t (mderef %arg))))
 
-      #|(declaim (inline (setf deref)))|# ;; TODO: SBCL is currently too stupid to actually do this; *gah..*.
+      (declaim (inline (setf deref)))
       (defun (setf deref) (%new-value %arg)
         (declare (optimize speed (safety 0)))
         (typecase %arg
@@ -59,6 +59,7 @@ TYPECASE can. ADD-DEREF-TYPE is used to "add new methods" vs. DEREF. |#
                                            it))))
                     (remove-if (λ (tc) (eq nil (cadadr tc)))
                                -deref-typecase*-))
+          ;; Fall back to CLOS method dispatch.
           (t (setf (mderef %arg) %new-value)))))))
 
 
