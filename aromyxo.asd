@@ -12,7 +12,8 @@
                :cl-utilities :alexandria
                :md5
                :bordeaux-threads
-               :cl-ppcre)
+               :cl-ppcre
+               :trivial-garbage)
 
   :serial t
   :components
