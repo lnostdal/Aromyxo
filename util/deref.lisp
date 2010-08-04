@@ -41,7 +41,8 @@ TYPECASE can. ADD-DEREF-TYPE is used to "add new methods" vs. DEREF. |#
    `(progn
       (declaim (inline deref))
       (defun deref (%arg)
-        (declare (optimize speed (safety 0)))
+        (declare (optimize speed (safety 0))
+                 (sb-ext:muffle-conditions style-warning)) ;; Perhaps typed CELLs is needed?
         (typecase %arg
           ,@(mapcar (λ (tc) `(,(first tc) ,(caadr tc)))
                     -deref-typecase*-)
@@ -50,13 +51,14 @@ TYPECASE can. ADD-DEREF-TYPE is used to "add new methods" vs. DEREF. |#
 
       (declaim (inline (setf deref)))
       (defun (setf deref) (%new-value %arg)
-        (declare (optimize speed (safety 0)))
+        (declare (optimize speed (safety 0))
+                 (sb-ext:muffle-conditions style-warning))
         (typecase %arg
           ,@(mapcar (lambda (cs)
                       `(,(first cs) ,(with (cadadr cs)
-                                       (if (eq it t)
-                                           `(setf ,(caadr cs) %new-value)
-                                           it))))
+                                           (if (eq it t)
+                                               `(setf ,(caadr cs) %new-value)
+                                               it))))
                     (remove-if (λ (tc) (eq nil (cadadr tc)))
                                -deref-typecase*-))
           ;; Fall back to CLOS method dispatch.
