@@ -17,6 +17,11 @@
                             (declare (ignore char arg))
                             `(mk-atom ,(read stream))))
 
+  (:dispatch-macro-char #\λ #\P
+                        #'(lambda (stream char arg)
+                            (declare (ignore char arg))
+                            `(mk-ptr ,(read stream))))
+
   (:dispatch-macro-char #\λ #\Space
                         #'(lambda (stream char arg)
                             (declare (ignore char arg))
