@@ -51,6 +51,8 @@
 
 
 (defmacro withp (it &body body)
+  "When IT is T, BODY is evaluated.
+If BODY returns T, IT is returned, otherwise NIL is returned."
   `(let ((it ,it))
      (when (and it (progn ,@body))
        it)))
