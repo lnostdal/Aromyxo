@@ -77,8 +77,8 @@
 |#
 
 
-(defmacro dbind (lambda-list arg-list &rest body)
-  `(destructing-bind ,lambda-list ,arg-list ,@body))
+(defmacro dbind (lambda-list arg-list &body body)
+  `(destructuring-bind ,lambda-list ,arg-list ,@body))
 
 
 (defmacro swap (a b)
