@@ -60,7 +60,9 @@
 (defmacro aand (result-symbol &rest args)
   (cond ((null args) t)
         ((null (cdr args)) (car args))
-        (t `(aif ,result-symbol ,(car args) (aand ,@(cdr args))))))
+        (t `(aif ,result-symbol
+                 ,(car args)
+                 (aand ,result-symbol ,@(cdr args))))))
 
 
 (defmacro acond (result-symbol &body clauses)
