@@ -300,10 +300,12 @@
                                (expt 10.0 (places frac-part))))
                          (invalid-number "Misplaced - sign")))))
               (t
-               (values (parse-integer string
-                                      :start start
-                                      :end end
-                                      :radix radix))))))))
+               (values (handler-case (parse-integer string
+                                                    :start start
+                                                    :end end
+                                                    :radix radix)
+                         (error ()
+                           (invalid-number "Unable to parse"))))))))))
 
 (defparameter *test-values*
   '("1" "-1" "1034" "-364" "80/335" "3.5333" "2.4E4" "6.8d3" "#xFF" "#b-1000" "#o-101/75" "13.09s3" "35.66l5" "21.4f2" "#C(1 2)" "#c ( #xF #o-1 ) " "#c(1d1 2s1)" "#16rFF" "#9r10" "#C(#9r44/61 4f4)"))
