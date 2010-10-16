@@ -16,7 +16,7 @@
          ,(second then-else))))
 
 
-(defmacro aif (result-symbol test-form &body then-else)
+(defmacro aif (result-symbol test-form then &optional else)
   "Example:
 \(aif answer (+ 2 2)
 \     (format t \"answer is true, and has the value ~A~%\" answer)
@@ -24,8 +24,8 @@
   (declare (ignorable result-symbol))
   `(let ((,result-symbol ,test-form))
      (if ,result-symbol
-         ,(first then-else)
-         ,(second then-else))))
+         ,then
+         ,else)))
 
 
 (defmacro aif* (bindings &body then-else)
@@ -43,7 +43,6 @@
   (warn "Aromyxo: Use WHEN-LET (from Alexandria) instead of AWHEN.")
   `(aif ,result-symbol ,test-form
      (progn ,@body)))
-
 
 
 (defmacro awhen* (bindings &body body)
