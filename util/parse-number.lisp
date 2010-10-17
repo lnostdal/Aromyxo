@@ -109,6 +109,8 @@
            (error 'invalid-number
                   :value (subseq string start end)
                   :reason reason)))
+    (when (zerop (length string))
+      (invalid-number "Zero length string"))
     (let ((end (or end (length string))))
       (if (and (eql (char string start) #\#)
                (member (char string (1+ start)) '(#\C #\c)))
