@@ -141,18 +141,19 @@
 
 
 (defmacro with-continue-restart (&body body)
+  "Wraps BODY in an outer restart named 'AMX-CONTINUE."
   `(restart-case
        (progn ,@body)
-     (continue)))
+     (amx-continue)))
 
 
 (defmacro always-continue (&body body)
-  "On an ERROR condition, always look for a CONTINUE restart and dispatch to it if
+  "On an ERROR condition, always look for a AMX-CONTINUE restart and dispatch to it if
 found. You probably do not want to use this in normal code.."
   (with-gensyms (c)
     `(handler-bind ((error (lambda (,c)
-                             (if (find-restart 'continue)
-                                 (invoke-restart 'continue)
+                             (if (find-restart 'amx-continue)
+                                 (invoke-restart 'amx-continue)
                                  (error ,c)))))
        ,@body)))
 

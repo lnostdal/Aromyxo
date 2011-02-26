@@ -75,3 +75,7 @@ TYPECASE can. ADD-DEREF-TYPE is used to "add new methods" vs. DEREF. |#
                                                        (declare (notinline deref))
                                                        (deref elt))
                                                      ,arg-sym)))
+
+(add-deref-type 'sb-ext:weak-pointer
+                :get-expansion (lambda (arg-sym)
+                                 `(sb-ext:weak-pointer-value ,arg-sym)))

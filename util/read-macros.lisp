@@ -22,6 +22,11 @@
                             (declare (ignore char arg))
                             `(mk-ptr ,(read stream))))
 
+  (:dispatch-macro-char #\λ #\W
+                        #'(lambda (stream char arg)
+                            (declare (ignore char arg))
+                            `(sb-ext:make-weak-pointer ,(read stream))))
+
   (:dispatch-macro-char #\λ #\Space
                         #'(lambda (stream char arg)
                             (declare (ignore char arg))
@@ -51,7 +56,7 @@
                        `(place-fn ,(read stream)))
                t)
 
-  (:dispatch-macro-char #\# #\&
+   (:dispatch-macro-char #\# #\&
                         (lambda (stream char arg)
                           (declare (ignore char arg))
                           `(mk-ptr ,(read stream)))))

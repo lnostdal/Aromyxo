@@ -68,3 +68,30 @@ variable in the recursively called code."
            (,bodym)
            (let ((,var-name ,initial-value))
              (,bodym))))))
+
+
+
+(define-variable *delayed-operations*
+    :value nil)
+
+
+(defmacro with-delayed-operations (&body body)
+  (with-gensyms (opr)
+    `(let ((*delayed-operations* *delayed-operations*))
+       (unwind-protect-case ()
+           (progn
+             ,@body)
+
+         (:abort
+          (dolist (,opr *delayed-operations*)
+            (when (cdr ,opr)
+              (funcall (car ,opr)))))
+
+         (:normal
+          (dolist (,opr *delayed-operations*)
+            (funcall (car ,opr))))))))
+
+
+(defun add-delayed-operation (fn &optional on-abort-p)
+  (push (cons fn on-abort-p)
+        *delayed-operations*))
