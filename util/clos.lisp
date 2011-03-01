@@ -161,6 +161,13 @@ the meta-class in question."))
         (call-next-method))))
 
 
-(defun slot-definition-type-check-function (slot-definition)
-  #+sbcl(sb-pcl::slot-definition-type-check-function slot-definition))
+(defun slot-definition-type-check-function (effective-slot-definition)
+  #+sbcl(sb-pcl::slot-info-typecheck (sb-pcl::slot-definition-info effective-slot-definition))
+  #-sbcl(error "TODO: Add something here for non-SBCL."))
 (export 'slot-definition-type-check-function)
+
+
+(defun (setf slot-definition-type-check-function) (new-func effective-slot-definition)
+  #+sbcl(setf (sb-pcl::slot-info-typecheck (sb-pcl::slot-definition-info effective-slot-definition))
+              new-func)
+  #-sbcl(error "TODO: Add something here for non-SBCL."))
